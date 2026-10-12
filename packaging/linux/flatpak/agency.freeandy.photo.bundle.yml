@@ -1,7 +1,7 @@
 # Flatpak manifest for the single-file bundle attached to every GitHub release
-# (photocraft-<version>-linux-<arch>.flatpak). Build it with packaging/linux/flatpak-bundle.sh.
+# (freeandiy-photo-<version>-linux-<arch>.flatpak). Build it with packaging/linux/flatpak-bundle.sh.
 #
-# It repackages the release's own Linux tarball (photocraft-<version>-linux-<arch>.tar.gz,
+# It repackages the release's own Linux tarball (freeandiy-photo-<version>-linux-<arch>.tar.gz,
 # built on Ubuntu 22.04 by package.sh) instead of compiling Rust inside flatpak-builder: no
 # network and no vendored crate sources during the build, a few seconds instead of 20+ minutes,
 # and byte-for-byte the same binaries as the AppImage/deb/rpm. The script unpacks the tarball
@@ -9,13 +9,13 @@
 # Wayland, xkbcommon and Vulkan at runtime; the freedesktop runtime has all of them, and the
 # GPU driver comes from its org.freedesktop.Platform.GL extension.
 #
-# ai.storyteller.photocraft.yml (same directory) is the from-source manifest for Flathub. Keep
+# agency.freeandy.photo.yml (same directory) is the from-source manifest for Flathub. Keep
 # runtime-version and finish-args identical in both (packaging-lint checks this).
-id: ai.storyteller.photocraft
+id: agency.freeandy.photo
 runtime: org.freedesktop.Platform
 runtime-version: '26.08'
 sdk: org.freedesktop.Sdk
-command: photocraft
+command: freeandiy-photo
 finish-args:
   # Display: Wayland first; X11 only when no Wayland compositor is running.
   - --socket=wayland
@@ -31,20 +31,20 @@ finish-args:
   - --filesystem=xdg-pictures
   - --filesystem=xdg-documents
   # Deliberately not granted: network (the optional --control server listens on 127.0.0.1 in
-  # the sandbox; `flatpak override --user --share=network ai.storyteller.photocraft` exposes it to
+  # the sandbox; `flatpak override --user --share=network agency.freeandy.photo` exposes it to
   # host agents) and home/host filesystem access.
 modules:
-  - name: photocraft
+  - name: freeandiy-photo
     buildsystem: simple
     build-commands:
-      - install -Dm755 bin/photocraft /app/bin/photocraft
-      - install -Dm755 bin/photocraft-cli /app/bin/photocraft-cli
-      - install -Dm644 share/applications/ai.storyteller.photocraft.desktop /app/share/applications/ai.storyteller.photocraft.desktop
+      - install -Dm755 bin/freeandiy-photo /app/bin/freeandiy-photo
+      - install -Dm755 bin/freeandiy-photo-cli /app/bin/freeandiy-photo-cli
+      - install -Dm644 share/applications/agency.freeandy.photo.desktop /app/share/applications/agency.freeandy.photo.desktop
       # .pcraft, .psb and .qoi; the runtime's shared-mime-info already knows PSD and the rest.
-      - install -Dm644 share/mime/packages/ai.storyteller.photocraft.xml /app/share/mime/packages/ai.storyteller.photocraft.xml
+      - install -Dm644 share/mime/packages/agency.freeandy.photo.xml /app/share/mime/packages/agency.freeandy.photo.xml
       # Already has the release's version and date substituted by package.sh.
-      - install -Dm644 share/metainfo/ai.storyteller.photocraft.metainfo.xml /app/share/metainfo/ai.storyteller.photocraft.metainfo.xml
-      - mkdir -p /app/share/icons /app/share/doc && cp -R share/icons/hicolor /app/share/icons/ && cp -R share/doc/photocraft /app/share/doc/
+      - install -Dm644 share/metainfo/agency.freeandy.photo.metainfo.xml /app/share/metainfo/agency.freeandy.photo.metainfo.xml
+      - mkdir -p /app/share/icons /app/share/doc && cp -R share/icons/hicolor /app/share/icons/ && cp -R share/doc/freeandiy-photo /app/share/doc/
     sources:
       - type: dir
         path: stage

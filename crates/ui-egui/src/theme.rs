@@ -66,6 +66,9 @@ impl ThemeKind {
         ThemeKind::BreezeDark,
     ];
     pub fn label(self) -> &'static str {
+        if let Some(label) = crate::freeandiy::theme_label(self) {
+            return label;
+        }
         match self {
             ThemeKind::Pro => "Pro (Dark)",
             ThemeKind::ProMedium => "Pro (Medium Gray)",
@@ -191,6 +194,9 @@ impl Tokens {
     }
 
     pub fn for_kind(kind: ThemeKind) -> Self {
+        if let Some(tokens) = crate::freeandiy::tokens(kind) {
+            return tokens;
+        }
         match kind {
             // Sampled from Photoshop 2026's default brightness (raw display values).
             ThemeKind::ProMedium => Tokens {
@@ -737,10 +743,11 @@ pub fn install_fonts_with(ctx: &egui::Context, cjk: crate::cjk_fonts::Sources) {
         fonts.font_data.insert(name.to_owned(), Arc::new(FontData::from_static(bytes)));
         Some(name.to_owned())
     };
-    let inter = add(&mut fonts, "Inter", photocraft_text::fonts::INTER_REGULAR.as_slice());
-    let medium = add(&mut fonts, "Inter-Medium", photocraft_text::fonts::INTER_MEDIUM.as_slice());
-    let semibold = add(&mut fonts, "Inter-SemiBold", photocraft_text::fonts::INTER_SEMIBOLD.as_slice());
-    let mono = add(&mut fonts, "JetBrainsMono", photocraft_text::fonts::JETBRAINS_MONO_REGULAR.as_slice());
+    // FreeANDIY: IBM Plex Sans for the UI, IBM Plex Mono for numbers and headings.
+    let inter = add(&mut fonts, "IBMPlexSans", crate::freeandiy::fonts::SANS_REGULAR);
+    let medium = add(&mut fonts, "IBMPlexSans-Medium", crate::freeandiy::fonts::SANS_MEDIUM);
+    let semibold = add(&mut fonts, "IBMPlexMono-SemiBold", crate::freeandiy::fonts::MONO_SEMIBOLD);
+    let mono = add(&mut fonts, "IBMPlexMono", crate::freeandiy::fonts::MONO_REGULAR);
     if let Some(inter) = inter {
         fonts.families.entry(FontFamily::Proportional).or_default().insert(0, inter);
     }
@@ -937,7 +944,7 @@ pub fn apply(ctx: &egui::Context, kind: ThemeKind) {
         s.spacing.scroll = if t.bevel { egui::style::ScrollStyle::solid() } else { egui::style::ScrollStyle::thin() };
         s.spacing.tooltip_width = 280.0;
     });
-    // egui selects its style branch using OS appearance, independently of PhotoCraft's fixed
+    // egui selects its style branch using OS appearance, independently of FreeANDIY Photo's fixed
     // Dark/Light mode or platform appearance service. Both branches need the selected palette.
     let style = ctx.global_style();
     ctx.set_style_of(egui::Theme::Light, Arc::clone(&style));
@@ -1017,7 +1024,7 @@ mod tests {
         let mut width = 0.0;
         ctx.run_ui(Default::default(), |ui| {
             assert!(medium_bound(ui.ctx()), "the installed stack reaches the second pass");
-            width = ui.painter().layout_no_wrap("PhotoCraft".into(), medium(13.0), Color32::WHITE).size().x;
+            width = ui.painter().layout_no_wrap("FreeANDIY Photo".into(), medium(13.0), Color32::WHITE).size().x;
         })
         .textures_delta
         .clear();
@@ -1027,7 +1034,7 @@ mod tests {
         let mut scaled = 0.0;
         ctx.run_ui(Default::default(), |ui| {
             assert!(medium_bound(ui.ctx()));
-            scaled = ui.painter().layout_no_wrap("PhotoCraft".into(), medium(13.0), Color32::WHITE).size().x;
+            scaled = ui.painter().layout_no_wrap("FreeANDIY Photo".into(), medium(13.0), Color32::WHITE).size().x;
         })
         .textures_delta
         .clear();
@@ -1037,7 +1044,7 @@ mod tests {
         for _ in 0..2 {
             ctx.run_ui(Default::default(), |ui| {
                 assert!(medium_bound(ui.ctx()));
-                let w = ui.painter().layout_no_wrap("PhotoCraft".into(), medium(13.0), Color32::WHITE).size().x;
+                let w = ui.painter().layout_no_wrap("FreeANDIY Photo".into(), medium(13.0), Color32::WHITE).size().x;
                 assert!((w - scaled).abs() < 1.0, "{w} vs {scaled}");
             })
             .textures_delta

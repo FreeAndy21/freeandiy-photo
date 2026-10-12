@@ -21,7 +21,7 @@ pub(crate) fn is_kra(bytes: &[u8]) -> bool {
     crate::ora::zip_mimetype(bytes).is_some_and(|mime| mime.trim_ascii() == MIMETYPE)
 }
 
-/// Import Krita's official merged preview as a flattened, editable PhotoCraft document.
+/// Import Krita's official merged preview as a flattened, editable FreeANDIY Photo document.
 /// Do not silently pretend this imported a layered or lossless Krita document.
 pub(crate) fn import(name: &str, bytes: &[u8], ctl: &Interrupt<'_>) -> Result<ImportResult, IoError> {
     ctl.check().map_err(|_| IoError::Cancelled)?;

@@ -53,13 +53,13 @@ a builder with more memory, pass `--build-arg CARGO_PROFILE_WASM_RELEASE_LTO=fat
 For a public deployment, put an HTTPS reverse proxy or your hosting platform's TLS endpoint
 in front of container port 8080. With a reverse proxy on the same host, bind only loopback
 (`-p 127.0.0.1:8080:8080`); with a proxy container, connect both through a Docker network.
-HTTPS enables WebGPU and browser clipboard APIs. If hosting under `/photocraft/`, redirect
-`/photocraft` to `/photocraft/` and strip that prefix when proxying to the container. Relative
+HTTPS enables WebGPU and browser clipboard APIs. If hosting under `/freeandiy-photo/`, redirect
+`/freeandiy-photo` to `/freeandiy-photo/` and strip that prefix when proxying to the container. Relative
 asset URLs then work without rebuilding. For example, in an existing HTTPS NGINX server:
 
 ```nginx
-location = /photocraft { return 301 /photocraft/; }
-location /photocraft/ {
+location = /freeandiy-photo { return 301 /freeandiy-photo/; }
+location /freeandiy-photo/ {
     proxy_pass http://127.0.0.1:8080/;
 }
 ```
@@ -92,7 +92,7 @@ speed) plus `wasm-opt -Oz`.
 
 All URLs in `index.html` are relative (`public_url = "./"` in `apps/photocraft-web/Trunk.toml`),
 so the site works at a domain root (`https://example.com/`), under a prefix
-(`https://example.com/tools/photocraft/`) and from a CDN bucket. The asset names carry a content
+(`https://example.com/tools/freeandiy-photo/`) and from a CDN bucket. The asset names carry a content
 hash, so they can be cached forever. Only `index.html` needs revalidation.
 
 ## Required server settings
@@ -115,7 +115,7 @@ hash, so they can be cached forever. Only `index.html` needs revalidation.
 nginx example:
 
 ```nginx
-location /photocraft/ {
+location /freeandiy-photo/ {
     types { application/wasm wasm; text/javascript js; text/html html; }
     gzip on;
     gzip_types application/wasm text/javascript text/html;
@@ -165,7 +165,7 @@ fetches them with `fetch()`, so a Content Security Policy needs them allowed by 
 
 ```html
 <iframe
-  src="https://example.com/photocraft/"
+  src="https://example.com/freeandiy-photo/"
   title="PhotoCraft image editor"
   style="width: 100%; height: 720px; border: 0;"
   allow="fullscreen; clipboard-read; clipboard-write"
@@ -195,6 +195,6 @@ PhotoCraft renders with wgpu. It uses **WebGPU** when the browser has it and fal
 | `?webgl` | Force the WebGL2 backend (useful when a WebGPU driver misbehaves) |
 | `?cpu` | Force the CPU canvas path (slowest, most compatible) |
 
-For example: `<iframe src="https://example.com/photocraft/?webgl" ...>`.
+For example: `<iframe src="https://example.com/freeandiy-photo/?webgl" ...>`.
 
 A browser with neither WebGPU nor WebGL2 gets a message in place of the app.

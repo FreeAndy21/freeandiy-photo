@@ -53,7 +53,7 @@ use photocraft_engine::Session;
 use photocraft_ui_egui::PhotocraftApp;
 
 /// Matches the `.desktop` file and hicolor icon name, so Wayland docks pick up the icon.
-const APP_ID: &str = "ai.storyteller.photocraft";
+const APP_ID: &str = "agency.freeandy.photo";
 
 /// Windows and Linux: no OS title bar; the app's top bar is the title bar, with its own caption
 /// buttons and edge resizing (`photocraft_ui_egui::titlebar`), as Photoshop does on Windows. macOS
@@ -78,7 +78,7 @@ fn native_options(custom_titlebar: bool) -> eframe::NativeOptions {
         viewport: egui::ViewportBuilder::default()
             .with_icon(app_icon::window_icon())
             .with_app_id(APP_ID)
-            .with_title("PhotoCraft")
+            .with_title("FreeANDIY Photo")
             .with_inner_size([1440.0, 900.0])
             .with_min_inner_size([760.0, 480.0])
             .with_drag_and_drop(true)
@@ -97,7 +97,7 @@ fn native_options(custom_titlebar: bool) -> eframe::NativeOptions {
 
 /// Grow a restored window that is smaller than the minimum size, keeping its centre. On
 /// Windows, eframe saves a minimized window's size (160 pt wide, 64 pt tall once eframe has
-/// clamped it), and the minimum size isn't applied to a restored one: PhotoCraft then reopened
+/// clamped it), and the minimum size isn't applied to a restored one: FreeANDIY Photo then reopened
 /// as a 160 × 64 strip on every launch.
 fn at_least_min_size(mut builder: egui::ViewportBuilder) -> egui::ViewportBuilder {
     let (Some(size), Some(min)) = (builder.inner_size, builder.min_inner_size) else { return builder };
@@ -208,7 +208,7 @@ fn main() -> eframe::Result {
     }
 
     // A malformed control port must not silently drop the control server (issue #701): name the
-    // bad value and fail the launch, like `photocraft-cli serve --port` does for the same typo.
+    // bad value and fail the launch, like `freeandiy-photo-cli serve --port` does for the same typo.
     // Exit status 2 is the usual command-line usage error, so a launcher sees the failure.
     if let Some(code) = control_args_exit_code(&control_arg_errors) {
         for error in &control_arg_errors {
@@ -221,7 +221,7 @@ fn main() -> eframe::Result {
     // and usage errors leave no file behind. Records logged until now are written to it first.
     if let (Some(logger), Some(dir)) = (logger, services::config_dir()) {
         match logger.attach_dir(&dir.join("logs")) {
-            Ok(path) => log::info!("PhotoCraft {}, log file {}", photocraft_engine::build_info::long_version(), path.display()),
+            Ok(path) => log::info!("FreeANDIY Photo {}, log file {}", photocraft_engine::build_info::long_version(), path.display()),
             // Standard error only by now (`attach_dir` gave up on the file); unlike `eprintln!`, never panics.
             Err(e) => log::warn!("no log file: {e}"),
         }
@@ -353,7 +353,7 @@ fn main() -> eframe::Result {
     let created_in_callback = app_created.clone();
     let started_sentinel = sentinel.clone();
     let result = eframe::run_native(
-        "PhotoCraft",
+        "FreeANDIY Photo",
         options,
         Box::new(move |cc| {
             created_in_callback.store(true, std::sync::atomic::Ordering::Relaxed);
@@ -649,7 +649,7 @@ mod tests {
     /// so it has to be the class the window carries: the app id, on Wayland and X11 alike.
     #[test]
     fn the_desktop_entry_names_the_window_class() {
-        let entry = include_str!("../../../packaging/linux/ai.storyteller.photocraft.desktop");
+        let entry = include_str!("../../../packaging/linux/agency.freeandy.photo.desktop");
         let class = entry.lines().find_map(|line| line.strip_prefix("StartupWMClass="));
         assert_eq!(class, Some(super::APP_ID));
     }

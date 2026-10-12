@@ -3,7 +3,7 @@ name = "photocraft"
 version.workspace = true
 edition.workspace = true
 license.workspace = true
-default-run = "photocraft"
+default-run = "freeandiy-photo"
 description = "Photocraft: an open-source, native image editor"
 build = "build.rs"
 
@@ -11,6 +11,11 @@ build = "build.rs"
 # Open HEIC/HEIF photos (the optional photocraft-heif crate). Not default so distributors choose
 # it; official builds (CI, packaging/, release) build with `--features heif`.
 heif = ["photocraft-codecs/heif"]
+
+# FreeANDIY: the executable carries the product name; the package keeps upstream's.
+[[bin]]
+name = "freeandiy-photo"
+path = "src/main.rs"
 
 [lints]
 workspace = true

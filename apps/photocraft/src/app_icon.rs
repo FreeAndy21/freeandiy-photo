@@ -29,7 +29,7 @@ pub fn window_icon() -> egui::IconData {
 #[cfg(target_os = "macos")]
 const PNG: &[u8] = include_bytes!("../../../assets/app-icon/photocraft-1024.png");
 #[cfg(not(target_os = "macos"))]
-const PNG: &[u8] = include_bytes!("../../../assets/app-icon/hicolor/256x256/apps/ai.storyteller.photocraft.png");
+const PNG: &[u8] = include_bytes!("../../../assets/app-icon/hicolor/256x256/apps/agency.freeandy.photo.png");
 
 #[cfg(test)]
 mod tests {
@@ -109,7 +109,7 @@ mod tests {
             let icon = attr(s, "Icon").expect("shortcuts name their icon");
             assert!(icons.contains(&icon), "shortcut icon {icon} isn't an <Icon>");
             if attr(s, "Advertise") == Some("yes") {
-                // Every shortcut in the MSI targets photocraft.exe.
+                // Every shortcut in the MSI targets freeandiy-photo.exe.
                 assert!(icon.ends_with(".exe"), "advertised shortcut icon {icon} must end in .exe like its target (ICE50)");
             }
         }

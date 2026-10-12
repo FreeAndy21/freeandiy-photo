@@ -2,9 +2,9 @@
 //! and Script Events Manager, plus the session state the File-menu commands share
 //! ([`FileMenuState`]).
 //!
-//! "Scripts" are PhotoCraft action scripts: JSON (`[[id, params], …]`, `{"steps": …}` or a
+//! "Scripts" are FreeANDIY Photo action scripts: JSON (`[[id, params], …]`, `{"steps": …}` or a
 //! droplet) or a plain-text list with one `command.id {json params}` per line (`#` comments).
-//! Droplets are JSON files (`.pcdroplet`) holding an action plus batch options; `photocraft-cli
+//! Droplets are JSON files (`.pcdroplet`) holding an action plus batch options; `freeandiy-photo-cli
 //! droplet <file> <inputs…>` runs one, and on Unix a `.command` shim makes it
 //! double-clickable / drop-target-able from the shell.
 //!
@@ -328,7 +328,7 @@ fn write_shim(droplet: &str) -> Result<String> {
     // quoted segment, emit a literal quote, then resume it.
     let quoted_abs = format!("'{}'", abs.replace('\'', "'\\''"));
     let body = format!(
-        "#!/bin/sh\n# PhotoCraft droplet: runs the action on the files given (or dropped).\nexec \"${{PHOTOCRAFT_CLI:-photocraft-cli}}\" droplet {quoted_abs} \"$@\"\n"
+        "#!/bin/sh\n# FreeANDIY Photo droplet: runs the action on the files given (or dropped).\nexec \"${{PHOTOCRAFT_CLI:-freeandiy-photo-cli}}\" droplet {quoted_abs} \"$@\"\n"
     );
     crate::file_cmds::write_file(&shim, body.as_bytes())?;
     #[cfg(unix)]
@@ -349,7 +349,7 @@ fn run_droplet(s: &mut Session, p: &Value) -> Result<Value> {
     let path = p.get("droplet").or_else(|| p.get("path")).and_then(Value::as_str).ok_or_else(|| bad(cmd, "missing \"droplet\""))?;
     let v: Value = serde_json::from_slice(&read_file(path)?).map_err(|e| bad(cmd, format!("{path}: {e}")))?;
     if v.get("photocraftDroplet").is_none() {
-        return Err(bad(cmd, format!("{path} is not a PhotoCraft droplet")));
+        return Err(bad(cmd, format!("{path} is not a FreeANDIY Photo droplet")));
     }
     let steps = v.get("action").and_then(|a| a.get("steps")).cloned().ok_or_else(|| bad(cmd, "droplet has no action"))?;
     let opts = v.get("options").cloned().unwrap_or(json!({}));
@@ -551,7 +551,7 @@ pub fn specs() -> Vec<CommandSpec> {
             "file.automate.createDroplet",
             "Create Droplet…",
             &["File", "Automate"],
-            r##"{"path":str (.pcdroplet),"steps":[[id,params]…] (the action),"name":str?,"output":folder?,"format":"same|png|jpg|…"?,"quality":0..12?,"shim":bool=true on Unix (writes <name>.command calling `photocraft-cli droplet`)} → {path, shim} (the actions its Play Action steps call are saved in the droplet)"##,
+            r##"{"path":str (.pcdroplet),"steps":[[id,params]…] (the action),"name":str?,"output":folder?,"format":"same|png|jpg|…"?,"quality":0..12?,"shim":bool=true on Unix (writes <name>.command calling `freeandiy-photo-cli droplet`)} → {path, shim} (the actions its Play Action steps call are saved in the droplet)"##,
             native,
             create_droplet
         ),

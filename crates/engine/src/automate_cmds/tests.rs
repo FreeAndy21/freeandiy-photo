@@ -211,7 +211,7 @@ fn droplets_carry_the_actions_their_play_steps_call() {
     let names: Vec<&str> = v["calledActions"].as_array().unwrap().iter().map(|a| a["name"].as_str().unwrap()).collect();
     assert_eq!(names, ["Rotate", "Outer"], "only the called actions, transitively");
 
-    // A fresh session, as `photocraft-cli droplet` and the droplet shim use.
+    // A fresh session, as `freeandiy-photo-cli droplet` and the droplet shim use.
     let mut fresh = Session::new();
     let r = fresh.execute("file.automate.runDroplet", json!({"droplet": dp, "input": [dir.clone()]})).unwrap();
     assert_eq!(r["files"].as_array().unwrap().len(), inputs.len(), "{r}");

@@ -1,13 +1,13 @@
-//! The PhotoCraft brand mark at the left of the title bar: the app icon (the kitsune,
-//! `assets/app-icon/`, see its README), where Photoshop shows its "Ps" tile. The PNG carries the
-//! icon's rounded corners; it is decoded once per context into a mipmapped texture, so it stays
-//! crisp at the title bar's size on any display scale.
+//! The FreeANDIY Photo brand mark at the left of the title bar: the app icon (`assets/app-icon/`, see
+//! its README), where Photoshop shows its "Ps" tile. The PNG is a square tile; it is decoded once
+//! per context into a mipmapped texture, so it stays crisp at the title bar's size on any display
+//! scale.
 
 use egui::{Color32, Context, Id, Rect, TextureHandle, TextureOptions, Ui, pos2};
 use photocraft_codecs::{ChannelLayout, SampleType};
 
 /// 128 px: sharp at 20 pt on a 3× display, and the mipmaps keep it clean at 1×.
-const ICON_PNG: &[u8] = include_bytes!("../../../assets/app-icon/hicolor/128x128/apps/ai.storyteller.photocraft.png");
+const ICON_PNG: &[u8] = include_bytes!("../../../assets/app-icon/hicolor/128x128/apps/agency.freeandy.photo.png");
 
 /// The icon's pixels (one transparent pixel if it couldn't be decoded, which a test rules out).
 fn decode() -> egui::ColorImage {
@@ -55,11 +55,11 @@ mod tests {
     use super::*;
 
     #[test]
-    fn the_icon_decodes_to_a_rounded_128_px_tile() {
+    fn the_icon_decodes_to_a_square_128_px_tile() {
         let img = decode();
         assert_eq!(img.size, [128, 128]);
-        // Rounded corners: the corner pixel is transparent, the centre opaque.
-        assert_eq!(img.pixels[0].a(), 0);
+        // FreeANDIY icons are square, print-flat tiles: corner and centre are both opaque.
+        assert_eq!(img.pixels[0].a(), 255);
         assert_eq!(img.pixels[64 * 128 + 64].a(), 255);
     }
 

@@ -2,17 +2,17 @@
 <!-- AppStream metadata (software centres, Flathub). Template: package.sh and the Flatpak
      manifest substitute @VERSION@ and @DATE@ from Cargo.toml and the build date. -->
 <component type="desktop-application">
-  <id>ai.storyteller.photocraft</id>
+  <id>agency.freeandy.photo</id>
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>MIT OR Apache-2.0</project_license>
-  <name>PhotoCraft</name>
+  <name>FreeANDIY Photo</name>
   <summary>Edit photos and layered PSD documents</summary>
-  <developer id="ai.storyteller">
+  <developer id="agency.freeandy">
     <name>Learning Machines LLC</name>
   </developer>
   <description>
     <p>
-      PhotoCraft is an open-source, native image editor with the familiar menus,
+      FreeANDIY Photo is an open-source, native image editor with the familiar menus,
       shortcuts, panels and tools professionals expect: layers, masks, adjustment
       layers, layer styles, type and brushes.
     </p>
@@ -23,13 +23,13 @@
       <li>Every action is a command, scriptable from a CLI, a JSON control channel and an MCP server</li>
     </ul>
   </description>
-  <launchable type="desktop-id">ai.storyteller.photocraft.desktop</launchable>
-  <icon type="stock">ai.storyteller.photocraft</icon>
+  <launchable type="desktop-id">agency.freeandy.photo.desktop</launchable>
+  <icon type="stock">agency.freeandy.photo</icon>
   <!-- Only url types known to appstream 0.15 (Ubuntu 22.04, where CI validates): no vcs-browser. -->
-  <url type="homepage">https://getartcraft.com/apps/photocraft</url>
-  <url type="bugtracker">https://github.com/storytold/photocraft/issues</url>
-  <url type="help">https://github.com/storytold/photocraft</url>
-  <url type="contact">https://discord.gg/artcraft</url>
+  <url type="homepage">https://freeandiy.freeandy.agency/photo</url>
+  <url type="bugtracker">https://github.com/FreeAndy21/freeandiy-photo/issues</url>
+  <url type="help">https://github.com/FreeAndy21/freeandiy-photo</url>
+  <url type="contact">https://github.com/FreeAndy21/freeandiy-photo/issues</url>
   <categories>
     <category>Graphics</category>
     <category>RasterGraphics</category>
@@ -44,12 +44,12 @@
   <screenshots>
     <screenshot type="default">
       <caption>Editing The Great Wave off Kanagawa with type layers and adjustment layers</caption>
-      <image>https://raw.githubusercontent.com/storytold/photocraft/main/docs/images/photocraft-demo.jpg</image>
+      <image>https://raw.githubusercontent.com/FreeAndy21/freeandiy-photo/main/docs/images/freeandiy-photo-demo.jpg</image>
     </screenshot>
   </screenshots>
   <branding>
-    <color type="primary" scheme_preference="light">#9fd0ff</color>
-    <color type="primary" scheme_preference="dark">#1f64ba</color>
+    <color type="primary" scheme_preference="light">#A3DDFA</color>
+    <color type="primary" scheme_preference="dark">#231F20</color>
   </branding>
   <requires>
     <display_length compare="ge">760</display_length>
@@ -60,8 +60,8 @@
     <control>tablet</control>
   </supports>
   <provides>
-    <binary>photocraft</binary>
-    <mediatype>application/x-photocraft</mediatype>
+    <binary>freeandiy-photo</binary>
+    <mediatype>application/x-freeandiy-photo</mediatype>
     <mediatype>image/x-paintnet</mediatype>
     <mediatype>image/openraster</mediatype>
     <mediatype>image/vnd.adobe.photoshop</mediatype>

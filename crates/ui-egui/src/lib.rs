@@ -27,6 +27,7 @@ pub mod artboard_ui;
 mod blend_keys;
 pub(crate) mod blend_preview;
 mod brand;
+pub mod freeandiy;
 pub(crate) mod brush_cursor;
 pub mod brush_panel;
 pub mod brush_picker;
@@ -2030,7 +2031,7 @@ impl PhotocraftApp {
         theme::apply(ctx, kind);
         // Right-click in any text field: its Cut / Copy / Paste menu (text_field_menu.rs).
         ctx.add_plugin(text_field_menu::TextFieldMenu);
-        // egui's own ⌘+ / ⌘- / ⌘0 scale the whole interface; PhotoCraft zooms the canvas instead
+        // egui's own ⌘+ / ⌘- / ⌘0 scale the whole interface; FreeANDIY Photo zooms the canvas instead
         // (shortcuts.rs), like Photoshop.
         ctx.options_mut(|o| o.zoom_with_keyboard = false);
         // ⌘/Ctrl + wheel scrolls sideways, as in Photoshop; only a pinch zooms (wheel_nav.rs).

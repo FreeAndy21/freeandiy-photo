@@ -18,8 +18,9 @@ workspace = true
 name = "photocraft_cli"
 path = "src/lib.rs"
 
+# FreeANDIY: the executable carries the product name; the package keeps upstream's.
 [[bin]]
-name = "photocraft-cli"
+name = "freeandiy-photo-cli"
 path = "src/main.rs"
 
 [dependencies]
