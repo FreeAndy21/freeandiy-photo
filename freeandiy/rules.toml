@@ -240,6 +240,13 @@ replace = "app-icon/{{this.repo}}"
 min = 3
 
 [[replace]]
+name = "title bar mark: the monogram, not the (unreadable at 20 pt) angel"
+include = ["crates/ui-egui/src/brand.rs"]
+find = "assets/app-icon/hicolor/128x128/apps/{{this.app_id}}.png"
+replace = "assets/app-icon/{{this.repo}}-mark.png"
+min = 1
+
+[[replace]]
 name = "windows exe resources"
 include = ["apps/*/build.rs"]
 regex = '"photocraft(\.exe)?"'
@@ -332,6 +339,10 @@ to = "assets/app-icon/{{this.repo}}.svg"
 [[copy]]
 from = "freeandiy/assets/icons/{{this.key}}/{{this.key}}.svg"
 to = "assets/app-icon/{{this.repo}}-small.svg"
+
+[[copy]]
+from = "freeandiy/assets/icons/{{this.key}}/mark-128.png"
+to = "assets/app-icon/{{this.repo}}-mark.png"
 
 [[copy]]
 from = "freeandiy/assets/icons/{{this.key}}/macos-1024.png"

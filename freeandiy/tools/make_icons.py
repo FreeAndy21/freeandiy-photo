@@ -9,6 +9,7 @@
 Reads freeandiy/branding.toml and writes freeandiy/assets/icons/<app>/:
   master-1024.png      full-bleed square (Windows, Linux, web)
   macos-1024.png       the same on Apple's 824/1024 grid with rounded corners
+  mark-128.png         the monogram for the in-app title bar mark
   <app>.icns           macOS bundle icon (needs iconutil, macOS only)
   <app>.ico            Windows icon, 16-256 px
   hicolor/<s>.png      16-512 px; 32 px and below use the lowercase monogram, the angel
@@ -141,6 +142,8 @@ def build(key, app, colors):
     m = master(app, colors)
     m.save(out / "master-1024.png", optimize=True)
     macos(m).save(out / "macos-1024.png", optimize=True)
+    # In-app mark (title bar, ~20 pt): the monogram, at 128 px for HiDPI.
+    monogram(app, colors, 128).save(out / "mark-128.png", optimize=True)
     for px in HICOLOR:
         at(app, colors, m, px).save(out / "hicolor" / f"{px}.png", optimize=True)
     imgs = [at(app, colors, m, px) for px in ICO]
