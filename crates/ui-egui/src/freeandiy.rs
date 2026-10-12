@@ -30,8 +30,11 @@ const YELLOW: Color32 = Color32::from_rgb(255, 217, 102);
 
 /// `a` blended towards `b` by `t` (0..1), like ink at `t` opacity on paper.
 const fn mix(a: Color32, b: Color32, t: f32) -> Color32 {
-    let ch = |x: u8, y: u8| (x as f32 + (y as f32 - x as f32) * t + 0.5) as u8;
-    Color32::from_rgb(ch(a.r(), b.r()), ch(a.g(), b.g()), ch(a.b(), b.b()))
+    Color32::from_rgb(channel(a.r(), b.r(), t), channel(a.g(), b.g(), t), channel(a.b(), b.b(), t))
+}
+
+const fn channel(x: u8, y: u8, t: f32) -> u8 {
+    (x as f32 + (y as f32 - x as f32) * t + 0.5) as u8
 }
 
 /// The bundled UI fonts (SIL Open Font License 1.1; licences in freeandiy/assets/fonts/).

@@ -1,0 +1,398 @@
+# Slovak (sk) catalog. Added by FreeANDIY (Free Andy Agency), 2026; MIT OR Apache-2.0 like the
+# other catalogs. Columns, separated by a TAB:  context <TAB> source <TAB> translation
+#
+#   context  empty                a plain UI string; `source` is the English text in the code
+#            @id                  a command id (e.g. file.saveAs): wins over the English text
+#            @plural              `source` is "one|other"; the translation lists the Slovak forms
+#                                 "one|few|other" (1 | 2–4 | 0, 5+), see `plural_cs` in i18n/mod.rs
+#            anything else        a disambiguating context passed to `tr_ctx`
+#   escapes  \n  \t  \\  inside a column. `{name}` placeholders must appear in both columns.
+#   lines starting with # and blank lines are ignored.
+#
+# Clean-room: every entry was written from the plain meaning of the English label using ordinary
+# Slovak computing vocabulary (vrstva, výber, štetec, prechod, rozostrenie, krytie ...). No
+# proprietary localisation resource, string table or product UI was consulted or copied; in
+# particular not the Slovak localisation of any commercial image editor. Add entries the same way.
+# Conventions: menus are nouns (Súbor, Úpravy, Obraz ...), commands are infinitives or nouns
+# (Otvoriť…, Uložiť ako…), sentence case as in the English source. Product and technology names
+# (FreeANDIY Photo, OpenType, CMYK, Lab ...) stay in Latin letters; the trailing "…" of dialog
+# commands is kept.
+#
+# Coverage: the menu bar (menus, submenus and first-level items), the app menus (Window, Help),
+# and the common dialogs (New Document, About, start screen). Everything else falls back to
+# English until translated.
+
+# Menus and submenus
+	File	Súbor
+	Export	Exportovať
+	Generate	Generovať
+	Automate	Automatizácia
+	Scripts	Skripty
+	Import	Importovať
+	Edit	Úpravy
+	Paste Special	Prilepiť špeciálne
+	Transform	Transformovať
+	Purge	Vyčistiť pamäť
+	Presets	Predvoľby
+	Preferences	Nastavenia
+	Image	Obraz
+	Mode	Režim
+	Adjustments	Úpravy obrazu
+	Image Rotation	Otočenie obrazu
+	Variables	Premenné
+	Analysis	Analýza
+	Layer	Vrstva
+	New	Nový
+	Delete	Odstrániť
+	Layer Style	Štýl vrstvy
+	Smart Filter	Inteligentný filter
+	New Fill Layer	Nová vrstva výplne
+	New Adjustment Layer	Nová vrstva úprav
+	Layer Mask	Maska vrstvy
+	Vector Mask	Vektorová maska
+	Smart Objects	Inteligentné objekty
+	Stack Mode	Režim zásobníka
+	Video Layers	Vrstvy videa
+	Rasterize	Rastrovať
+	Arrange	Usporiadať
+	Combine Shapes	Kombinovať tvary
+	Align	Zarovnať
+	Distribute	Rozmiestniť
+	Matting	Okraje
+	Type	Text
+	Panels	Panely
+	Anti-Alias	Vyhladzovanie
+	Orientation	Orientácia
+	OpenType	OpenType
+	Font Preview Size	Veľkosť náhľadu písma
+	Language Options	Jazykové možnosti
+	Select	Výber
+	Modify	Upraviť
+	Filter	Filter
+	Blur	Rozostrenie
+	Blur Gallery	Galéria rozostrenia
+	Distort	Deformácia
+	Noise	Šum
+	Pixelate	Pixelizácia
+	Render	Vykresliť
+	Sharpen	Zaostrenie
+	Stylize	Štylizácia
+	Video	Video
+	Other…	Iné…
+	View	Zobraziť
+	Proof Setup	Nastavenie náhľadu tlače
+	Pixel Aspect Ratio	Pomer strán pixelov
+	Screen Mode	Režim obrazovky
+	Show	Zobraziť
+	Snap To	Prichytiť k
+	Window	Okno
+	Workspace	Pracovná plocha
+	Help	Pomocník
+	Theme	Téma
+
+# File
+	New…	Nový…
+	Open…	Otvoriť…
+	Open As…	Otvoriť ako…
+	Open EXR Parts…	Otvoriť časti EXR…
+	Close	Zavrieť
+	Close All	Zavrieť všetko
+	Close Others	Zavrieť ostatné
+	Save	Uložiť
+	Save As…	Uložiť ako…
+	Save a Copy…	Uložiť kópiu…
+	Revert	Vrátiť na uložené
+	Place Embedded…	Umiestniť vložené…
+	Place Linked…	Umiestniť prepojené…
+	Package…	Zbaliť…
+	File Info…	Informácie o súbore…
+	Print…	Tlačiť…
+	Print One Copy	Tlačiť jednu kópiu
+	Exit	Ukončiť
+	Quick Export as PNG	Rýchly export do PNG
+	Export As…	Exportovať ako…
+
+# Edit
+	Undo	Späť
+	Redo	Znova
+	Toggle Last State	Prepnúť posledný stav
+	Fade…	Zoslabiť…
+	Cut	Vystrihnúť
+	Copy	Kopírovať
+	Copy Merged	Kopírovať zlúčené
+	Paste	Prilepiť
+	Clear	Vymazať
+	Search…	Hľadať…
+	Check Spelling…	Kontrola pravopisu…
+	Find and Replace Text…	Nájsť a nahradiť text…
+	Fill…	Výplň…
+	Stroke…	Obrys…
+	Content-Aware Fill…	Výplň podľa obsahu…
+	Content-Aware Scale	Mierka podľa obsahu
+	Puppet Warp	Bábková deformácia
+	Perspective Warp	Deformácia perspektívy
+	Free Transform	Voľná transformácia
+	Auto-Align Layers…	Automaticky zarovnať vrstvy…
+	Auto-Blend Layers…	Automaticky prelínať vrstvy…
+	Define Brush Preset…	Definovať predvoľbu štetca…
+	Define Pattern…	Definovať vzorku…
+	Define Custom Shape…	Definovať vlastný tvar…
+	Color Settings…	Nastavenie farieb…
+	Assign Profile…	Priradiť profil…
+	Convert to Profile…	Previesť do profilu…
+	Keyboard Shortcuts…	Klávesové skratky…
+	Menus…	Ponuky…
+	Toolbar…	Panel nástrojov…
+
+# Image
+	Auto Tone	Automatické tóny
+	Auto Contrast	Automatický kontrast
+	Auto Color	Automatické farby
+	Image Size…	Veľkosť obrazu…
+	Canvas Size…	Veľkosť plátna…
+	Crop	Orezať
+	Trim…	Orezať okraje…
+	Reveal All	Odkryť všetko
+	Duplicate…	Duplikovať…
+	Apply Image…	Použiť obraz…
+	Calculations…	Výpočty…
+	Apply Data Set…	Použiť množinu údajov…
+	Trap…	Presah farieb…
+
+# Layer
+	Duplicate Layer…	Duplikovať vrstvu…
+	Rename Layer	Premenovať vrstvu
+	Layer Content Options…	Možnosti obsahu vrstvy…
+	Mask All Objects	Maskovať všetky objekty
+	Create Clipping Mask	Vytvoriť orezovú masku
+	New Layer Based Slice	Nový rez podľa vrstvy
+	Group Layers	Zoskupiť vrstvy
+	Ungroup Layers	Zrušiť zoskupenie vrstiev
+	Hide Layers	Skryť vrstvy
+	Lock Layers…	Zamknúť vrstvy…
+	Link Layers	Prepojiť vrstvy
+	Select Linked Layers	Vybrať prepojené vrstvy
+	Merge Layers	Zlúčiť vrstvy
+	Merge Visible	Zlúčiť viditeľné
+	Flatten Image	Zlúčiť do jednej vrstvy
+
+# Type
+	Create Work Path	Vytvoriť pracovnú cestu
+	Convert to Shape	Previesť na tvar
+	Rasterize Type Layer	Rastrovať textovú vrstvu
+	Convert to Paragraph Text	Previesť na odstavcový text
+	Convert to Point Text	Previesť na bodový text
+	Warp Text…	Deformovať text…
+	Update All Text Layers	Aktualizovať všetky textové vrstvy
+	Replace All Missing Fonts	Nahradiť všetky chýbajúce písma
+	Resolve Missing Fonts…	Vyriešiť chýbajúce písma…
+	Paste Lorem Ipsum	Prilepiť Lorem Ipsum
+	Load Default Type Styles	Načítať predvolené štýly textu
+	Save Default Type Styles	Uložiť predvolené štýly textu
+
+# Select
+	All	Všetko
+	Deselect	Zrušiť výber
+	Reselect	Znova vybrať
+	Inverse Selection	Invertovať výber
+	All Layers	Všetky vrstvy
+	Deselect Layers	Zrušiť výber vrstiev
+	Find Layers	Nájsť vrstvy
+	Isolate Layers	Izolovať vrstvy
+	Color Range…	Rozsah farieb…
+	Focus Area…	Zaostrená oblasť…
+	Subject	Objekt
+	Sky	Obloha
+	Select and Mask…	Vybrať a maskovať…
+	Grow	Rozšíriť
+	Similar	Podobné
+	Transform Selection	Transformovať výber
+	Edit in Quick Mask Mode	Upraviť v režime rýchlej masky
+	Load Selection…	Načítať výber…
+	Save Selection…	Uložiť výber…
+
+# Filter
+	Last Filter	Posledný filter
+	Convert for Smart Filters	Previesť pre inteligentné filtre
+	Filter Gallery…	Galéria filtrov…
+	Camera Raw Filter…	Filter Camera Raw…
+	Adaptive Wide Angle…	Adaptívny širokouhlý objektív…
+	Lens Correction…	Korekcia objektívu…
+	Liquify…	Skvapalniť…
+	Vanishing Point…	Úbežník…
+
+# View
+	Proof Colors	Náhľad farieb tlače
+	Gamut Warning	Upozornenie na farebný rozsah
+	Pixel Aspect Ratio Correction	Korekcia pomeru strán pixelov
+	32-bit Preview Options…	Možnosti 32-bitového náhľadu…
+	Zoom In	Priblížiť
+	Zoom Out	Oddialiť
+	Fit on Screen	Prispôsobiť obrazovke
+	Fit Layer(s) on Screen	Prispôsobiť vrstvy obrazovke
+	Fit Artboard on Screen	Prispôsobiť pracovnú plochu obrazovke
+	100%	100 %
+	200%	200 %
+	Print Size	Veľkosť tlače
+	Flip Horizontal	Prevrátiť vodorovne
+	Extras	Pomôcky
+	Rulers	Pravítka
+	Snap	Prichytávanie
+	Lock Guides	Zamknúť vodidlá
+	Clear Guides	Vymazať vodidlá
+	Clear Selected Artboard Guides	Vymazať vodidlá vybranej pracovnej plochy
+	Clear Canvas Guides	Vymazať vodidlá plátna
+	New Guide…	Nové vodidlo…
+	New Guide Layout…	Nové rozloženie vodidiel…
+	New Guides From Shape	Nové vodidlá z tvaru
+	Lock Slices	Zamknúť rezy
+	Clear Slices	Vymazať rezy
+	Pattern Preview	Náhľad vzorky
+	Pixel Art Preview	Náhľad pixel artu
+	Grid	Mriežka
+	Guides	Vodidlá
+	Target Path	Cieľová cesta
+	Cycle Screen Mode	Prepínať režim obrazovky
+	Rotate View	Otočiť zobrazenie
+	Reset View	Obnoviť zobrazenie
+
+# Window and panels
+	Actions	Akcie
+	Brush Settings	Nastavenia štetca
+	Brushes	Štetce
+	Channels	Kanály
+	Character	Znak
+	Character Styles	Štýly znakov
+	Clone Source	Zdroj klonovania
+	Color	Farba
+	Glyphs	Glyfy
+	Gradients	Prechody
+	Histogram	Histogram
+	History	História
+	Info	Informácie
+	Layer Comps	Kompozície vrstiev
+	Layers	Vrstvy
+	Measurement Log	Záznam meraní
+	Modifier Keys	Modifikačné klávesy
+	Navigator	Navigátor
+	Notes	Poznámky
+	Paragraph	Odstavec
+	Paragraph Styles	Štýly odstavcov
+	Paths	Cesty
+	Patterns	Vzorky
+	Properties	Vlastnosti
+	Shapes	Tvary
+	Styles	Štýly
+	Swatches	Vzorkovník
+	Timeline	Časová os
+	Tool Presets	Predvoľby nástrojov
+	Options	Možnosti
+	Tools	Nástroje
+	Transform Symmetry	Transformovať symetriu
+	Reset Tool	Obnoviť nástroj
+	Reset All Tools	Obnoviť všetky nástroje
+	Change Panel Group	Zmeniť skupinu panelov
+	Change Panel Layout	Zmeniť rozloženie panelov
+	Move Panel	Presunúť panel
+	Float Panel	Uvoľniť panel
+	Dock Panel	Ukotviť panel
+	Activate Panel	Aktivovať panel
+	Close Panel	Zavrieť panel
+	Scale	Mierka
+	Rotate	Otočiť
+	Skew	Skosiť
+	Perspective	Perspektíva
+	Free Transform a Copy	Voľne transformovať kópiu
+	Edit Type	Upraviť text
+	New Window for Document	Nové okno pre dokument
+	Show/Hide All Panels	Zobraziť/skryť všetky panely
+	Show/Hide Panels	Zobraziť/skryť panely
+	Next Document	Nasledujúci dokument
+	Previous Document	Predchádzajúci dokument
+	Next Appearance Mode	Ďalší režim vzhľadu
+	Pro Theme	Téma Pro
+	FreeANDIY Dark Theme	FreeANDIY tmavá
+	Pro Light Gray Theme	Téma Pro svetlosivá
+	Pro Light Theme	Téma Pro svetlá
+	Studio Theme	Téma Studio
+	FreeANDIY Light Theme	FreeANDIY svetlá
+	Classic Theme	Klasická téma
+	Solarized Dark Theme	Téma Solarized tmavá
+	Adwaita Light Theme	Téma Adwaita svetlá
+	Adwaita Dark Theme	Téma Adwaita tmavá
+	Breeze Light Theme	Téma Breeze svetlá
+	Breeze Dark Theme	Téma Breeze tmavá
+	Sync with system	Podľa systému
+	FreeANDIY Light	FreeANDIY svetlá
+	FreeANDIY Dark	FreeANDIY tmavá
+
+# Help
+	FreeANDIY Photo Website	Web FreeANDIY Photo
+	FreeANDIY Photo on GitHub	FreeANDIY Photo na GitHube
+	Report an Issue…	Nahlásiť problém…
+	System Info…	Informácie o systéme…
+	About FreeANDIY Photo	O aplikácii FreeANDIY Photo
+
+# Common dialog strings
+	OK	OK
+	Cancel	Zrušiť
+	Apply	Použiť
+	Reset	Obnoviť
+	Create	Vytvoriť
+	Saved	Uložené
+	Error	Chyba
+	Preview	Náhľad
+	Yes	Áno
+	No	Nie
+	Don't Save	Neukladať
+
+# New Document
+	New Document	Nový dokument
+	Width	Šírka
+	Height	Výška
+	Resolution	Rozlíšenie
+	Pixels/Inch	Pixely/palec
+	Pixels/Centimeter	Pixely/centimeter
+	Color Mode	Farebný režim
+	Background Contents	Obsah pozadia
+	Background Color	Farba pozadia
+	White	Biela
+	Black	Čierna
+	Transparent	Priehľadné
+	RGB Color	Farby RGB
+	CMYK Color	Farby CMYK
+	Lab Color	Farby Lab
+	Grayscale	Odtiene sivej
+	Save Preset…	Uložiť predvoľbu…
+	Preset Name	Názov predvoľby
+	PRESET DETAILS	PODROBNOSTI PREDVOĽBY
+	BLANK DOCUMENT PRESETS ({n})	PREDVOĽBY PRÁZDNEHO DOKUMENTU ({n})
+	No saved presets yet.	Zatiaľ žiadne uložené predvoľby.
+	Untitled-1	Bez názvu-1
+	{name} options	Možnosti: {name}
+
+# Start screen
+	open source	open source
+	Create a new document or open an existing file.	Vytvorte nový dokument alebo otvorte existujúci súbor.
+	Drop an image or PSD anywhere to open it.	Pretiahnite sem obrázok alebo PSD a otvorí sa.
+	Use File › Open, or paste a copied image with {paste}.	Použite Súbor › Otvoriť alebo prilepte skopírovaný obrázok pomocou {paste}.
+	Recent	Nedávne
+	More documents	Ďalšie dokumenty
+	Remove from Recent	Odstrániť z nedávnych
+	Remove {name} from Recent	Odstrániť {name} z nedávnych
+	Clear Recent Files	Vymazať nedávne súbory
+	Opening…	Otvára sa…
+	Cancel opening	Zrušiť otváranie
+	New document…	Nový dokument…
+	FreeANDIY Photo website	Web FreeANDIY Photo
+	GitHub	GitHub
+
+# About
+	About	O aplikácii
+	Contributors	Prispievatelia
+	Models	Modely
+	System Info	Informácie o systéme
+	Version {version}	Verzia {version}
+	FreeANDIY Photo — an open-source, native image editor written in Rust.	FreeANDIY Photo — open-source natívny editor obrázkov napísaný v Ruste.
+	{app} is based on the open-source project {upstream} (© ArtCraft Team and contributors, MIT/Apache-2.0). FreeANDIY is not affiliated with the ArtCraft team.	{app} je založený na open-source projekte {upstream} (© ArtCraft Team a prispievatelia, MIT/Apache-2.0). FreeANDIY nie je spojený s tímom ArtCraft.
+	Opened {url}	Otvorené: {url}
