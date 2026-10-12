@@ -2554,13 +2554,13 @@ mod tests {
                 ctx.run_ui(input.clone(), |ui| tick(&mut app, ui.ctx())).textures_delta.clear();
             }
             assert!((ctx.pixels_per_point() - expected).abs() < 1e-4);
-            assert_eq!(ctx.fonts(|f| f.definitions().font_data["Inter"].tweak.scale), 16.0 / 12.0);
+            assert_eq!(ctx.fonts(|f| f.definitions().font_data["IBMPlexSans"].tweak.scale), 16.0 / 12.0);
         }
         app.run("prefs.reset", json!({"path": "interface.uiFontSize"})).unwrap();
         for _ in 0..2 {
             ctx.run_ui(input.clone(), |ui| tick(&mut app, ui.ctx())).textures_delta.clear();
         }
-        assert_eq!(ctx.fonts(|f| f.definitions().font_data["Inter"].tweak.scale), 1.0);
+        assert_eq!(ctx.fonts(|f| f.definitions().font_data["IBMPlexSans"].tweak.scale), 1.0);
         assert!((ctx.pixels_per_point() - 1.5).abs() < 1e-4, "resetting font size keeps UI Scale");
     }
 
@@ -2857,7 +2857,7 @@ mod tests {
 
         assert_eq!(h.state().session.prefs().performance.history_states, 12);
         assert_eq!(h.state().ui.theme, ThemeKind::StudioLight);
-        assert_eq!(h.ctx.fonts(|f| f.definitions().font_data["Inter"].tweak.scale), 16.0 / 12.0);
+        assert_eq!(h.ctx.fonts(|f| f.definitions().font_data["IBMPlexSans"].tweak.scale), 16.0 / 12.0);
         assert!(!h.state().session.prefs().type_.smart_quotes, "hidden settings round-trip unchanged");
         let d = h.state().ui.dialogs.iter().find(|d| d.id == id).unwrap();
         assert_eq!(d.fields["section"], "interface");
@@ -2882,7 +2882,7 @@ mod tests {
         h.run_steps(4);
         assert!(h.state().ui.dialogs.iter().all(|d| d.id != id));
         assert_eq!(h.state().session.prefs().performance.history_states, 22);
-        assert_eq!(h.ctx.fonts(|f| f.definitions().font_data["Inter"].tweak.scale), 16.0 / 12.0);
+        assert_eq!(h.ctx.fonts(|f| f.definitions().font_data["IBMPlexSans"].tweak.scale), 16.0 / 12.0);
         let saved = store.lock().unwrap().clone().unwrap();
         let (mut restarted, _) = app_with_saved(Some(saved));
         tick(&mut restarted, &egui::Context::default());

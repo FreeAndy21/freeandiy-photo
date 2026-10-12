@@ -70,8 +70,9 @@ fn light() -> Tokens {
     Tokens {
         kind: ThemeKind::StudioLight,
         chrome: PAPER,
-        canvas: ink(0.10),
-        canvas_dot: ink(0.18),
+        // The canvas surround stays neutral grey: a tinted surround skews how image colours read.
+        canvas: Color32::from_gray(218),
+        canvas_dot: Color32::from_gray(200),
         dock: ink(0.04),
         card: PAPER,
         card_border: ink(0.30),
@@ -115,8 +116,9 @@ fn dark() -> Tokens {
     Tokens {
         kind: ThemeKind::ProMedium,
         chrome: BLACK,
-        canvas: mix(BLACK, Color32::BLACK, 0.35),
-        canvas_dot: ink(0.12),
+        // Neutral grey surround (see light()).
+        canvas: Color32::from_gray(40),
+        canvas_dot: Color32::from_gray(52),
         dock: mix(BLACK, Color32::BLACK, 0.20),
         card: BLACK,
         card_border: ink(0.25),
