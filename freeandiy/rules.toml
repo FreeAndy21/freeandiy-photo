@@ -190,7 +190,7 @@ exclude = ["crates/codecs/tests/orientation.rs", "crates/cms/**", "xtask/**"]
 find = "PhotoCraft"
 replace = "{{this.name}}"
 skip_comments = ["//"]
-min = 150
+min = 80
 
 [[replace]]
 name = "product name PhotoCraft"
