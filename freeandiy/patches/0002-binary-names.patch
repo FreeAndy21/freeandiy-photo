@@ -1,0 +1,40 @@
+diff --git a/apps/photocraft-cli/Cargo.toml b/apps/photocraft-cli/Cargo.toml
+index a6d3b493..fdc692f1 100644
+--- a/apps/photocraft-cli/Cargo.toml
++++ b/apps/photocraft-cli/Cargo.toml
+@@ -18,8 +18,9 @@ workspace = true
+ name = "photocraft_cli"
+ path = "src/lib.rs"
+ 
++# FreeANDIY: the executable carries the product name; the package keeps upstream's.
+ [[bin]]
+-name = "photocraft-cli"
++name = "freeandiy-photo-cli"
+ path = "src/main.rs"
+ 
+ [dependencies]
+diff --git a/apps/photocraft/Cargo.toml b/apps/photocraft/Cargo.toml
+index 740a75b3..ffb973ef 100644
+--- a/apps/photocraft/Cargo.toml
++++ b/apps/photocraft/Cargo.toml
+@@ -3,7 +3,7 @@ name = "photocraft"
+ version.workspace = true
+ edition.workspace = true
+ license.workspace = true
+-default-run = "photocraft"
++default-run = "freeandiy-photo"
+ description = "Photocraft: an open-source, native image editor"
+ build = "build.rs"
+ 
+@@ -12,6 +12,11 @@ build = "build.rs"
+ # it; official builds (CI, packaging/, release) build with `--features heif`.
+ heif = ["photocraft-codecs/heif"]
+ 
++# FreeANDIY: the executable carries the product name; the package keeps upstream's.
++[[bin]]
++name = "freeandiy-photo"
++path = "src/main.rs"
++
+ [lints]
+ workspace = true
+ 

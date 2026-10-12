@@ -1,0 +1,346 @@
+diff --git a/crates/engine/src/prefs.rs b/crates/engine/src/prefs.rs
+index cffc39bc..e01a1dc3 100644
+--- a/crates/engine/src/prefs.rs
++++ b/crates/engine/src/prefs.rs
+@@ -291,7 +291,8 @@ impl Default for Interface {
+     fn default() -> Self {
+         Self {
+             theme: Theme::ProMedium,
+-            appearance_mode: AppearanceMode::Dark,
++            // FreeANDIY: paper and ink by default (StudioLight/ProMedium carry the FreeANDIY tokens).
++            appearance_mode: AppearanceMode::Light,
+             dark_theme: DarkTheme::ProMedium,
+             light_theme: LightTheme::StudioLight,
+             favorite_themes: Vec::new(),
+diff --git a/crates/engine/src/prefs/tests.rs b/crates/engine/src/prefs/tests.rs
+index 6bb34a97..a635f00f 100644
+--- a/crates/engine/src/prefs/tests.rs
++++ b/crates/engine/src/prefs/tests.rs
+@@ -52,8 +52,8 @@ fn canvas_dot_grid_can_be_disabled_persisted_and_reset() {
+ #[test]
+ fn appearance_defaults_and_legacy_theme_migrate() {
+     let p = Preferences::default();
+-    // New users keep Photoshop's default; following the system is opt-in.
+-    assert_eq!(p.interface.appearance_mode, AppearanceMode::Dark);
++    // FreeANDIY: new users start in the light paper-and-ink theme; following the system is opt-in.
++    assert_eq!(p.interface.appearance_mode, AppearanceMode::Light);
+     assert_eq!(p.interface.dark_theme, DarkTheme::ProMedium);
+     assert_eq!(p.interface.light_theme, LightTheme::StudioLight);
+     for (theme, mode, dark, light) in
+diff --git a/crates/ui-egui/src/brand.rs b/crates/ui-egui/src/brand.rs
+index a601e95c..0bf88ac2 100644
+--- a/crates/ui-egui/src/brand.rs
++++ b/crates/ui-egui/src/brand.rs
+@@ -1,7 +1,7 @@
+-//! The PhotoCraft brand mark at the left of the title bar: the app icon (the kitsune,
+-//! `assets/app-icon/`, see its README), where Photoshop shows its "Ps" tile. The PNG carries the
+-//! icon's rounded corners; it is decoded once per context into a mipmapped texture, so it stays
+-//! crisp at the title bar's size on any display scale.
++//! The PhotoCraft brand mark at the left of the title bar: the app icon (`assets/app-icon/`, see
++//! its README), where Photoshop shows its "Ps" tile. The PNG is a square tile; it is decoded once
++//! per context into a mipmapped texture, so it stays crisp at the title bar's size on any display
++//! scale.
+ 
+ use egui::{Color32, Context, Id, Rect, TextureHandle, TextureOptions, Ui, pos2};
+ use photocraft_codecs::{ChannelLayout, SampleType};
+@@ -55,11 +55,11 @@ mod tests {
+     use super::*;
+ 
+     #[test]
+-    fn the_icon_decodes_to_a_rounded_128_px_tile() {
++    fn the_icon_decodes_to_a_square_128_px_tile() {
+         let img = decode();
+         assert_eq!(img.size, [128, 128]);
+-        // Rounded corners: the corner pixel is transparent, the centre opaque.
+-        assert_eq!(img.pixels[0].a(), 0);
++        // FreeANDIY icons are square, print-flat tiles: corner and centre are both opaque.
++        assert_eq!(img.pixels[0].a(), 255);
+         assert_eq!(img.pixels[64 * 128 + 64].a(), 255);
+     }
+ 
+diff --git a/crates/ui-egui/src/canvas.rs b/crates/ui-egui/src/canvas.rs
+index 804744d3..ba373bf1 100644
+--- a/crates/ui-egui/src/canvas.rs
++++ b/crates/ui-egui/src/canvas.rs
+@@ -2416,8 +2416,6 @@ fn start_screen(app: &mut PhotocraftApp, ui: &mut egui::Ui) {
+                 home_recent(app, ui, &recent);
+             }
+             ui.add_space(26.0);
+-            crate::links::discord_button(app, ui, 190.0);
+-            ui.add_space(10.0);
+             crate::links::link_row(app, ui);
+         });
+     });
+diff --git a/crates/ui-egui/src/dialogs.rs b/crates/ui-egui/src/dialogs.rs
+index 2765d0e2..d17c9eb9 100644
+--- a/crates/ui-egui/src/dialogs.rs
++++ b/crates/ui-egui/src/dialogs.rs
+@@ -421,10 +421,10 @@ fn about_tab_body(app: &mut PhotocraftApp, ui: &mut egui::Ui, tab: &str) {
+             ui.label(crate::i18n::fmt(tl!("Version {version}"), &[("version", &photocraft_engine::build_info::long_version())]));
+             ui.add_space(12.0);
+             ui.vertical_centered(|ui| {
+-                crate::links::discord_button(app, ui, 220.0);
+-                ui.add_space(8.0);
+                 crate::links::link_row(app, ui);
+             });
++            ui.add_space(12.0);
++            crate::freeandiy::about_attribution(ui);
+             ui.add_space(10.0);
+             ui.weak("egui · wgpu · photocraft-engine");
+         }
+diff --git a/crates/ui-egui/src/lib.rs b/crates/ui-egui/src/lib.rs
+index d6309afc..3f8a0e85 100644
+--- a/crates/ui-egui/src/lib.rs
++++ b/crates/ui-egui/src/lib.rs
+@@ -27,6 +27,7 @@ pub mod artboard_ui;
+ mod blend_keys;
+ pub(crate) mod blend_preview;
+ mod brand;
++pub mod freeandiy;
+ pub(crate) mod brush_cursor;
+ pub mod brush_panel;
+ pub mod brush_picker;
+diff --git a/crates/ui-egui/src/links.rs b/crates/ui-egui/src/links.rs
+index e01a19d9..7351cf89 100644
+--- a/crates/ui-egui/src/links.rs
++++ b/crates/ui-egui/src/links.rs
+@@ -1,20 +1,16 @@
+-//! Community and project links: the Help menu, the About dialog, the start screen and the title
+-//! bar all open these. URLs follow the crafting-app pattern (`getartcraft.com/apps/<app>`,
+-//! `github.com/storytold/<app>`).
++//! Project links: the Help menu, the About dialog and the start screen open these. The URLs
++//! come from freeandiy/branding.toml (FreeANDIY: no community chat, no upstream sites).
+ 
+ use serde_json::{Value, json};
+ 
+ use crate::PhotocraftApp;
+ 
+-pub const DISCORD: &str = "https://discord.gg/artcraft";
+-pub const ARTCRAFT_WEBSITE: &str = "https://getartcraft.com";
+-pub const APP_PAGE: &str = "https://getartcraft.com/apps/photocraft";
+-pub const GITHUB: &str = "https://github.com/storytold/photocraft";
+-pub const ISSUES: &str = "https://github.com/storytold/photocraft/issues";
++pub const APP_PAGE: &str = crate::freeandiy::APP_PAGE;
++pub const GITHUB: &str = crate::freeandiy::GITHUB;
++pub const ISSUES: &str = crate::freeandiy::ISSUES;
+ 
+ /// Help-menu link commands: (id, url). Labels live in `menus::UI_COMMANDS`.
+-pub const COMMANDS: &[(&str, &str)] =
+-    &[("help.discord", DISCORD), ("help.website", APP_PAGE), ("help.artcraftWebsite", ARTCRAFT_WEBSITE), ("help.github", GITHUB), ("help.reportIssue", ISSUES)];
++pub const COMMANDS: &[(&str, &str)] = &[("help.website", APP_PAGE), ("help.github", GITHUB), ("help.reportIssue", ISSUES)];
+ 
+ pub fn url_for(id: &str) -> Option<&'static str> {
+     COMMANDS.iter().find(|c| c.0 == id).map(|c| c.1)
+@@ -32,24 +28,15 @@ pub fn open(app: &mut PhotocraftApp, ctx: &egui::Context, url: &str) -> Value {
+     json!({"url": url})
+ }
+ 
+-/// The prominent "Join us on Discord" button.
+-pub fn discord_button(app: &mut PhotocraftApp, ui: &mut egui::Ui, min_width: f32) -> egui::Response {
+-    let r = crate::widgets::primary_button(ui, tl!("Join us on Discord"), min_width).on_hover_text(DISCORD);
+-    if r.clicked() {
+-        open(app, ui.ctx(), DISCORD);
+-    }
+-    r
+-}
+-
+-/// "PhotoCraft website · GitHub · ArtCraft" as links, centred. Clicks route through [`open`] (the
++/// "PhotoCraft website · GitHub" as links, centred. Clicks route through [`open`] (the
+ /// platform browser service) rather than `ui.hyperlink_to`, which uses the unreliable `ctx.open_url`.
+ pub fn link_row(app: &mut PhotocraftApp, ui: &mut egui::Ui) {
+     let t = crate::theme::Tokens::get(ui.ctx());
+-    let links = [(tl!("PhotoCraft website"), APP_PAGE), (tl!("GitHub"), GITHUB), (tl!("ArtCraft"), ARTCRAFT_WEBSITE)];
++    let links = [(tl!("PhotoCraft website"), APP_PAGE), (tl!("GitHub"), GITHUB)];
+     let font = egui::FontId::proportional(12.5);
+     let sep = "  ·  ";
+     let width: f32 = links.iter().map(|(l, _)| ui.painter().layout_no_wrap((*l).into(), font.clone(), t.text).size().x).sum::<f32>()
+-        + 2.0 * ui.painter().layout_no_wrap(sep.into(), font.clone(), t.text).size().x;
++        + (links.len() - 1) as f32 * ui.painter().layout_no_wrap(sep.into(), font.clone(), t.text).size().x;
+     let mut clicked: Option<&str> = None;
+     ui.horizontal(|ui| {
+         ui.spacing_mut().item_spacing.x = 0.0;
+@@ -74,7 +61,7 @@ mod tests {
+ 
+     #[test]
+     fn links_open_through_the_platform_service() {
+-        // Issue #14: links (Help menu, Discord button, start-page links) must open in the browser.
++        // Issue #14: links (Help menu, start-page links) must open in the browser.
+         // They route through the `open_url` service rather than the unreliable `ctx.open_url`.
+         use std::sync::{Arc, Mutex};
+         let opened: Arc<Mutex<Vec<String>>> = Arc::new(Mutex::new(Vec::new()));
+@@ -93,16 +80,16 @@ mod tests {
+             crate::menus::invoke(&mut app, &ctx, id, json!({})).unwrap();
+             assert_eq!(opened.lock().unwrap().last().map(String::as_str), Some(*url), "{id}");
+         }
+-        // The direct open() helper (Discord button / start-page links) also uses it.
+-        open(&mut app, &ctx, DISCORD);
+-        assert_eq!(opened.lock().unwrap().last().map(String::as_str), Some(DISCORD));
++        // The direct open() helper (start-page links) also uses it.
++        open(&mut app, &ctx, GITHUB);
++        assert_eq!(opened.lock().unwrap().last().map(String::as_str), Some(GITHUB));
+     }
+ 
+     #[test]
+     fn help_menu_lists_links_then_separator_then_system_info_and_about() {
+         let app = PhotocraftApp::new(photocraft_engine::Session::new(), Default::default());
+         let help: Vec<String> = crate::menus::menu_items(&app).into_iter().filter(|i| i.path == ["Help"]).map(|i| i.id).collect();
+-        assert_eq!(help, ["help.discord", "help.website", "help.artcraftWebsite", "help.github", "help.reportIssue", "---", "help.systemInfo", "help.about"]);
++        assert_eq!(help, ["help.website", "help.github", "help.reportIssue", "---", "help.systemInfo", "help.about"]);
+         for (id, _) in COMMANDS {
+             assert!(crate::menus::is_live(id) && crate::menus::is_enabled(&app, id), "{id}");
+         }
+@@ -112,11 +99,7 @@ mod tests {
+     fn link_commands_open_their_urls() {
+         let mut app = PhotocraftApp::new(photocraft_engine::Session::new(), Default::default());
+         let ctx = egui::Context::default();
+-        for (id, url) in [
+-            ("help.discord", "https://discord.gg/artcraft"),
+-            ("help.website", "https://getartcraft.com/apps/photocraft"),
+-            ("help.github", "https://github.com/storytold/photocraft"),
+-        ] {
++        for (id, url) in [("help.website", APP_PAGE), ("help.github", GITHUB), ("help.reportIssue", ISSUES)] {
+             let r = crate::menus::invoke(&mut app, &ctx, id, serde_json::json!({})).unwrap();
+             assert_eq!(r["url"], url);
+             assert_eq!(app.ui.status, format!("Opened {url}"));
+diff --git a/crates/ui-egui/src/menus.rs b/crates/ui-egui/src/menus.rs
+index 18f1d6af..ead416c3 100644
+--- a/crates/ui-egui/src/menus.rs
++++ b/crates/ui-egui/src/menus.rs
+@@ -78,11 +78,11 @@ pub const UI_COMMANDS: &[(&str, &str, &[&str], Option<&str>)] = &[
+     ("window.previousDocument", "Previous Document", &[], Some("Ctrl+Shift+Tab")),
+     ("window.theme.toggle", "Next Appearance Mode", &["Window"], None),
+     ("window.theme.pro", "Pro Theme", &["Window", "Theme"], None),
+-    ("window.theme.proMedium", "Pro Medium Gray Theme", &["Window", "Theme"], None),
++    ("window.theme.proMedium", "FreeANDIY Dark Theme", &["Window", "Theme"], None),
+     ("window.theme.proLightGray", "Pro Light Gray Theme", &["Window", "Theme"], None),
+     ("window.theme.proLight", "Pro Light Theme", &["Window", "Theme"], None),
+     ("window.theme.studio", "Studio Theme", &["Window", "Theme"], None),
+-    ("window.theme.studioLight", "Studio Light Theme", &["Window", "Theme"], None),
++    ("window.theme.studioLight", "FreeANDIY Light Theme", &["Window", "Theme"], None),
+     ("window.theme.classic", "Classic Theme", &["Window", "Theme"], None),
+     ("window.theme.solarizedDark", "Solarized Dark Theme", &["Window", "Theme"], None),
+     ("window.theme.adwaita", "Adwaita Light Theme", &["Window", "Theme"], None),
+@@ -91,9 +91,7 @@ pub const UI_COMMANDS: &[(&str, &str, &[&str], Option<&str>)] = &[
+     ("window.theme.breezeDark", "Breeze Dark Theme", &["Window", "Theme"], None),
+     ("window.theme.system", "Sync with system", &["Window", "Theme"], None),
+     ("edit.search", "Search…", &["Edit"], Some("Cmd+F")),
+-    ("help.discord", "Join the ArtCraft Discord…", &["Help"], None),
+     ("help.website", "PhotoCraft Website", &["Help"], None),
+-    ("help.artcraftWebsite", "ArtCraft Website", &["Help"], None),
+     ("help.github", "PhotoCraft on GitHub", &["Help"], None),
+     ("help.reportIssue", "Report an Issue…", &["Help"], None),
+     ("help.systemInfo", "System Info…", &["Help"], None),
+@@ -179,7 +177,7 @@ pub(crate) fn invoke_unguarded(app: &mut PhotocraftApp, ctx: &egui::Context, id:
+     if let Some(result) = crate::panel_docking::command(app, id, &params) {
+         return result;
+     }
+-    // Help › Discord, website, GitHub, Report an Issue.
++    // Help › Website, GitHub, Report an Issue.
+     if let Some(url) = crate::links::url_for(id) {
+         return Ok(crate::links::open(app, ctx, url));
+     }
+diff --git a/crates/ui-egui/src/panels.rs b/crates/ui-egui/src/panels.rs
+index 0f6a1b83..8f8aa4aa 100644
+--- a/crates/ui-egui/src/panels.rs
++++ b/crates/ui-egui/src/panels.rs
+@@ -589,8 +589,7 @@ pub fn title_bar(app: &mut PhotocraftApp, ui: &mut egui::Ui) {
+                         ("Pixel Art".to_string(), tl!("Pixel Art")),
+                         ("Motion".to_string(), tl!("Motion")),
+                     ];
+-                    // A narrow bar drops what is also in a menu, Discord first (below), then
+-                    // the theme toggle (Preferences), then search (Edit › Search), and narrows
++                    // A narrow bar drops what is also in a menu: the theme toggle (Preferences), then search (Edit › Search), and narrows
+                     // the switcher (Window › Workspace) before anything runs over.
+                     let room = ui.available_width();
+                     let icons_shown: u8 = if room >= WORKSPACE_MIN + 2.0 * ICON_SLOT {
+@@ -623,25 +622,6 @@ pub fn title_bar(app: &mut PhotocraftApp, ui: &mut egui::Ui) {
+                         }
+                         button.context_menu(|ui| crate::prefs_ui::appearance_context_menu(app, ui));
+                     }
+-                    // The community Discord, one click away while the bar has room for it
+-                    // (narrow windows drop it first; it is also Help › Discord).
+-                    if ui.available_width() >= DISCORD_ROOM {
+-                        let discord = egui::Button::image_and_text(
+-                            icons::image("message-square", 14.0, t.text_dim),
+-                            egui::RichText::new(tl!("Discord")).color(t.text_dim).size(12.0),
+-                        )
+-                        .frame(false);
+-                        if ui
+-                            .add(discord)
+-                            .on_hover_text({
+-                                let template = "Join the ArtCraft Discord ({url})";
+-                                crate::i18n::fmt(tl!(template), &[("url", crate::links::DISCORD)])
+-                            })
+-                            .clicked()
+-                        {
+-                            crate::links::open(app, ui.ctx(), crate::links::DISCORD);
+-                        }
+-                    }
+                     if rtl { ui.min_rect().right() } else { ui.min_rect().left() }
+                 };
+                 free = if rtl { (controls_end, menus_end) } else { (menus_end, controls_end) };
+@@ -698,8 +678,6 @@ pub fn sync_window_title(app: &mut PhotocraftApp, ctx: &egui::Context) {
+ 
+ /// Minimum space kept between the window title and the menus or controls beside it.
+ const TITLE_GAP: f32 = 16.0;
+-/// Free room the title bar needs after its other controls to show the Discord button.
+-const DISCORD_ROOM: f32 = 120.0;
+ /// The workspace switcher's narrowest width, and one 28 pt title-bar icon with its spacing.
+ const WORKSPACE_MIN: f32 = 90.0;
+ const ICON_SLOT: f32 = 34.0;
+diff --git a/crates/ui-egui/src/theme.rs b/crates/ui-egui/src/theme.rs
+index 0719c5ce..51d5f69b 100644
+--- a/crates/ui-egui/src/theme.rs
++++ b/crates/ui-egui/src/theme.rs
+@@ -66,6 +66,9 @@ impl ThemeKind {
+         ThemeKind::BreezeDark,
+     ];
+     pub fn label(self) -> &'static str {
++        if let Some(label) = crate::freeandiy::theme_label(self) {
++            return label;
++        }
+         match self {
+             ThemeKind::Pro => "Pro (Dark)",
+             ThemeKind::ProMedium => "Pro (Medium Gray)",
+@@ -191,6 +194,9 @@ impl Tokens {
+     }
+ 
+     pub fn for_kind(kind: ThemeKind) -> Self {
++        if let Some(tokens) = crate::freeandiy::tokens(kind) {
++            return tokens;
++        }
+         match kind {
+             // Sampled from Photoshop 2026's default brightness (raw display values).
+             ThemeKind::ProMedium => Tokens {
+@@ -737,10 +743,11 @@ pub fn install_fonts_with(ctx: &egui::Context, cjk: crate::cjk_fonts::Sources) {
+         fonts.font_data.insert(name.to_owned(), Arc::new(FontData::from_static(bytes)));
+         Some(name.to_owned())
+     };
+-    let inter = add(&mut fonts, "Inter", photocraft_text::fonts::INTER_REGULAR.as_slice());
+-    let medium = add(&mut fonts, "Inter-Medium", photocraft_text::fonts::INTER_MEDIUM.as_slice());
+-    let semibold = add(&mut fonts, "Inter-SemiBold", photocraft_text::fonts::INTER_SEMIBOLD.as_slice());
+-    let mono = add(&mut fonts, "JetBrainsMono", photocraft_text::fonts::JETBRAINS_MONO_REGULAR.as_slice());
++    // FreeANDIY: IBM Plex Sans for the UI, IBM Plex Mono for numbers and headings.
++    let inter = add(&mut fonts, "IBMPlexSans", crate::freeandiy::fonts::SANS_REGULAR);
++    let medium = add(&mut fonts, "IBMPlexSans-Medium", crate::freeandiy::fonts::SANS_MEDIUM);
++    let semibold = add(&mut fonts, "IBMPlexMono-SemiBold", crate::freeandiy::fonts::MONO_SEMIBOLD);
++    let mono = add(&mut fonts, "IBMPlexMono", crate::freeandiy::fonts::MONO_REGULAR);
+     if let Some(inter) = inter {
+         fonts.families.entry(FontFamily::Proportional).or_default().insert(0, inter);
+     }
+diff --git a/crates/ui-egui/src/titlebar.rs b/crates/ui-egui/src/titlebar.rs
+index d02536ae..b7a3e37a 100644
+--- a/crates/ui-egui/src/titlebar.rs
++++ b/crates/ui-egui/src/titlebar.rs
+@@ -309,9 +309,8 @@ mod tests {
+             for a in &widgets {
+                 assert!(a.right() <= min.left(), "{a:?} runs into the caption buttons at {width}");
+             }
+-            // Wide windows show the whole group; the narrowest drops Discord (also Help › Discord).
+-            let has_discord = texts(&out).iter().any(|(t, _)| t == "Discord");
+-            assert_eq!(has_discord, width > 1000.0, "Discord at {width}");
++            // FreeANDIY: no community chat button in the bar.
++            assert!(!texts(&out).iter().any(|(t, _)| t == "Discord"), "no Discord at {width}");
+         }
+     }
+ 
