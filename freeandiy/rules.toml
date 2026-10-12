@@ -233,6 +233,13 @@ replace = "{{this.repo}}-cli"
 min = 5
 
 [[replace]]
+name = "icon file paths in code (assets/app-icon/photocraft*)"
+include = ["apps/**/*.rs", "crates/**/*.rs"]
+find = "app-icon/photocraft"
+replace = "app-icon/{{this.repo}}"
+min = 3
+
+[[replace]]
 name = "windows exe resources"
 include = ["apps/*/build.rs"]
 regex = '"photocraft(\.exe)?"'
