@@ -1,32 +1,3 @@
-diff --git a/crates/engine/src/prefs.rs b/crates/engine/src/prefs.rs
-index cffc39bc..e01a1dc3 100644
---- a/crates/engine/src/prefs.rs
-+++ b/crates/engine/src/prefs.rs
-@@ -291,7 +291,8 @@ impl Default for Interface {
-     fn default() -> Self {
-         Self {
-             theme: Theme::ProMedium,
--            appearance_mode: AppearanceMode::Dark,
-+            // FreeANDIY: paper and ink by default (StudioLight/ProMedium carry the FreeANDIY tokens).
-+            appearance_mode: AppearanceMode::Light,
-             dark_theme: DarkTheme::ProMedium,
-             light_theme: LightTheme::StudioLight,
-             favorite_themes: Vec::new(),
-diff --git a/crates/engine/src/prefs/tests.rs b/crates/engine/src/prefs/tests.rs
-index 6bb34a97..a635f00f 100644
---- a/crates/engine/src/prefs/tests.rs
-+++ b/crates/engine/src/prefs/tests.rs
-@@ -52,8 +52,8 @@ fn canvas_dot_grid_can_be_disabled_persisted_and_reset() {
- #[test]
- fn appearance_defaults_and_legacy_theme_migrate() {
-     let p = Preferences::default();
--    // New users keep Photoshop's default; following the system is opt-in.
--    assert_eq!(p.interface.appearance_mode, AppearanceMode::Dark);
-+    // FreeANDIY: new users start in the light paper-and-ink theme; following the system is opt-in.
-+    assert_eq!(p.interface.appearance_mode, AppearanceMode::Light);
-     assert_eq!(p.interface.dark_theme, DarkTheme::ProMedium);
-     assert_eq!(p.interface.light_theme, LightTheme::StudioLight);
-     for (theme, mode, dark, light) in
 diff --git a/crates/ui-egui/src/brand.rs b/crates/ui-egui/src/brand.rs
 index a601e95c..0bf88ac2 100644
 --- a/crates/ui-egui/src/brand.rs
@@ -71,6 +42,33 @@ index 804744d3..ba373bf1 100644
              crate::links::link_row(app, ui);
          });
      });
+diff --git a/crates/ui-egui/src/cjk_fonts.rs b/crates/ui-egui/src/cjk_fonts.rs
+index e5166310..73c84dad 100644
+--- a/crates/ui-egui/src/cjk_fonts.rs
++++ b/crates/ui-egui/src/cjk_fonts.rs
+@@ -671,7 +671,7 @@ mod tests {
+             })
+             .unwrap();
+             let fonts = ctx.fonts(|f| f.definitions().clone());
+-            assert_eq!(fonts.families[&FontFamily::Proportional].first().map(String::as_str), Some("Inter"));
++            assert_eq!(fonts.families[&FontFamily::Proportional].first().map(String::as_str), Some("IBMPlexSans"));
+             for stack in fonts.families.values() {
+                 assert_eq!(stack.iter().filter(|n| n.starts_with(FONT_PREFIX)).count(), 3);
+                 assert_eq!(stack.last().map(String::as_str), Some("system-cjk-2"), "appended last so Latin keeps Inter");
+diff --git a/crates/ui-egui/src/color_picker_ui.rs b/crates/ui-egui/src/color_picker_ui.rs
+index cfa7183a..2706a694 100644
+--- a/crates/ui-egui/src/color_picker_ui.rs
++++ b/crates/ui-egui/src/color_picker_ui.rs
+@@ -890,7 +890,8 @@ mod tests {
+         let id = open(h.state_mut(), "foreground");
+         h.run_steps(6);
+         let rect = h.ctx.memory(|m| m.area_rect(egui::Id::new(("dialog", id)))).expect("the picker window");
+-        assert!(rect.width() <= 534.0 && rect.height() <= 376.0, "Color Picker window {} x {} points, Photoshop's 534 x 376", rect.width(), rect.height());
++        // FreeANDIY: IBM Plex Sans has taller line metrics than Inter (+6 pt over 13 rows).
++        assert!(rect.width() <= 534.0 && rect.height() <= 384.0, "Color Picker window {} x {} points, Photoshop's 534 x 376", rect.width(), rect.height());
+         // Everything still shows: the three actions and all 13 component fields.
+         for label in ["OK", "Cancel", "Add to Swatches", "Only Web Colors"] {
+             assert!(rect.contains_rect(h.get_by_label(label).rect()), "{label} inside the window");
 diff --git a/crates/ui-egui/src/dialogs.rs b/crates/ui-egui/src/dialogs.rs
 index 2765d0e2..d17c9eb9 100644
 --- a/crates/ui-egui/src/dialogs.rs
@@ -88,6 +86,29 @@ index 2765d0e2..d17c9eb9 100644
              ui.add_space(10.0);
              ui.weak("egui · wgpu · photocraft-engine");
          }
+diff --git a/crates/ui-egui/src/i18n/mod.rs b/crates/ui-egui/src/i18n/mod.rs
+index ecf21f46..46c461e3 100644
+--- a/crates/ui-egui/src/i18n/mod.rs
++++ b/crates/ui-egui/src/i18n/mod.rs
+@@ -141,7 +141,7 @@ fn inflate(source: &[u8]) -> Result<String, String> {
+ }
+ 
+ /// The registry. English first: it is the fallback and the source language.
+-pub static LANGUAGES: [LangInfo; 18] = [
++pub static LANGUAGES: [LangInfo; 19] = [
+     LangInfo { code: "en", name: "English", source: b"", plural: plural_one_other, complete_menus: false, catalog: OnceLock::new() },
+     LangInfo { code: "ja", name: "日本語", source: catalog!("ja"), plural: plural_none, complete_menus: true, catalog: OnceLock::new() },
+     LangInfo { code: "zh-hans", name: "简体中文", source: catalog!("zh-hans"), plural: plural_none, complete_menus: true, catalog: OnceLock::new() },
+@@ -153,6 +153,9 @@ pub static LANGUAGES: [LangInfo; 18] = [
+     // Ukrainian has the same one/few/many rule for integer counts.
+     LangInfo { code: "uk", name: "Українська", source: catalog!("uk"), plural: plural_russian, complete_menus: true, catalog: OnceLock::new() },
+     LangInfo { code: "cs", name: "Čeština", source: catalog!("cs"), plural: plural_cs, complete_menus: true, catalog: OnceLock::new() },
++    // Slovak (added by FreeANDIY): menus and the common dialogs so far; the rest shows English.
++    // Slovak counts like Czech (1 | 2–4 | 0, 5+).
++    LangInfo { code: "sk", name: "Slovenčina", source: catalog!("sk"), plural: plural_cs, complete_menus: false, catalog: OnceLock::new() },
+     LangInfo { code: "fr", name: "Français", source: catalog!("fr"), plural: plural_fr, complete_menus: true, catalog: OnceLock::new() },
+     LangInfo { code: "id", name: "Bahasa Indonesia", source: catalog!("id"), plural: plural_none, complete_menus: true, catalog: OnceLock::new() },
+     LangInfo { code: "ko", name: "한국어", source: catalog!("ko"), plural: plural_none, complete_menus: true, catalog: OnceLock::new() },
 diff --git a/crates/ui-egui/src/lib.rs b/crates/ui-egui/src/lib.rs
 index d6309afc..3f8a0e85 100644
 --- a/crates/ui-egui/src/lib.rs
@@ -289,7 +310,7 @@ index 0f6a1b83..8f8aa4aa 100644
  const WORKSPACE_MIN: f32 = 90.0;
  const ICON_SLOT: f32 = 34.0;
 diff --git a/crates/ui-egui/src/theme.rs b/crates/ui-egui/src/theme.rs
-index 0719c5ce..51d5f69b 100644
+index 0719c5ce..dcb39281 100644
 --- a/crates/ui-egui/src/theme.rs
 +++ b/crates/ui-egui/src/theme.rs
 @@ -66,6 +66,9 @@ impl ThemeKind {
@@ -328,6 +349,28 @@ index 0719c5ce..51d5f69b 100644
      if let Some(inter) = inter {
          fonts.families.entry(FontFamily::Proportional).or_default().insert(0, inter);
      }
+@@ -1067,8 +1074,9 @@ mod tests {
+             assert!(contrast(t.text_faint, t.card) >= 2.0, "{kind:?} faint text");
+             assert!(contrast(t.accent_text, t.card) >= 3.0, "{kind:?} accent text");
+         }
+-        // The four Pro levels step from darkest to lightest, as in Photoshop.
+-        let cards = [ThemeKind::Pro, ThemeKind::ProMedium, ThemeKind::ProLightGray, ThemeKind::ProLight].map(|k| Tokens::for_kind(k).card.r());
++        // The Pro levels step from darkest to lightest, as in Photoshop (FreeANDIY: Pro Medium
++        // Gray carries the FreeANDIY Dark tokens, so it is left out).
++        let cards = [ThemeKind::Pro, ThemeKind::ProLightGray, ThemeKind::ProLight].map(|k| Tokens::for_kind(k).card.r());
+         assert!(cards.windows(2).all(|w| w[0] < w[1]), "{cards:?}");
+         assert!(!ThemeKind::Studio.is_pro() && !ThemeKind::StudioLight.is_pro() && !ThemeKind::Classic.is_pro());
+         assert_eq!(ThemeKind::from_name("light gray"), Some(ThemeKind::ProLightGray));
+@@ -1095,7 +1103,8 @@ mod tests {
+         assert_eq!(ThemeKind::from_name("Solarized Dark"), Some(ThemeKind::SolarizedDark));
+         assert_eq!(ThemeKind::from_name("solarized"), Some(ThemeKind::SolarizedDark));
+         let m = Tokens::for_kind(ThemeKind::ProMedium);
+-        assert!(m.pro && m.dark() && m.kind == ThemeKind::ProMedium && m.card == Color32::from_rgb(83, 83, 83));
++        // FreeANDIY: Pro Medium Gray carries the FreeANDIY Dark tokens.
++        assert!(m.pro && m.dark() && m.kind == ThemeKind::ProMedium && Some(m) == crate::freeandiy::tokens(ThemeKind::ProMedium));
+         let s = Tokens::for_kind(ThemeKind::SolarizedDark);
+         assert!(s.dark() && !s.bevel && s.kind == ThemeKind::SolarizedDark && s.card == Color32::from_rgb(7, 54, 66));
+         assert_eq!(ThemeKind::from_name("neon"), None);
 diff --git a/crates/ui-egui/src/titlebar.rs b/crates/ui-egui/src/titlebar.rs
 index d02536ae..b7a3e37a 100644
 --- a/crates/ui-egui/src/titlebar.rs

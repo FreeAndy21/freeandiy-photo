@@ -247,6 +247,13 @@ replace = "assets/app-icon/{{this.repo}}-mark.png"
 min = 1
 
 [[replace]]
+name = "test reading upstream's README tool list"
+include = ["crates/ui-egui/src/state.rs"]
+find = 'include_str!("../../../README.md")'
+replace = 'include_str!("../../../docs/upstream-README.md")'
+min = 1
+
+[[replace]]
 name = "windows exe resources"
 include = ["apps/*/build.rs"]
 regex = '"photocraft(\.exe)?"'
@@ -313,6 +320,13 @@ replace = "photocraft"
 min = 10
 
 # ---------------------------------------------------------------------------------------------
+
+# Upstream's README stays available (a test reads its tool list); ours replaces it at the root.
+[[rename]]
+include = ["README.md"]
+find = "README.md"
+replace = "docs/upstream-README.md"
+min = 1
 
 [[rename]]
 include = ["packaging/**"]
