@@ -4,7 +4,7 @@
 //! In order:
 //! 1. `PHOTOCRAFT_CONFIG_DIR`, when set (tests, agents, custom setups).
 //! 2. **Portable mode** (#228): a marker file ([`PORTABLE_MARKERS`]) beside the executable puts
-//!    everything in `<exe dir>/FreeANDIYPhotoData`, so a portable copy on a USB stick leaves nothing in
+//!    everything in `<exe dir>/PhotoCraftData`, so a portable copy on a USB stick leaves nothing in
 //!    `%APPDATA%`. The Windows portable zip ships with `portable.txt`; the MSI doesn't. If that
 //!    folder can't be written (read-only medium, Program Files), the app warns and falls back.
 //! 3. The platform convention: macOS `~/Library/Application Support/Photocraft`, Windows
@@ -24,7 +24,7 @@ pub const PORTABLE_DATA_DIR: &str = "FreeANDIYPhotoData";
 pub enum Mode {
     /// `PHOTOCRAFT_CONFIG_DIR`.
     Override,
-    /// `<exe dir>/FreeANDIYPhotoData`.
+    /// `<exe dir>/PhotoCraftData`.
     Portable,
     /// The platform's per-user config directory.
     Platform,

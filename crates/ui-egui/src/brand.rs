@@ -1,4 +1,4 @@
-//! The FreeANDIY Photo brand mark at the left of the title bar: the app icon (`assets/app-icon/`, see
+//! The PhotoCraft brand mark at the left of the title bar: the app icon (`assets/app-icon/`, see
 //! its README), where Photoshop shows its "Ps" tile. The PNG is a square tile; it is decoded once
 //! per context into a mipmapped texture, so it stays crisp at the title bar's size on any display
 //! scale.

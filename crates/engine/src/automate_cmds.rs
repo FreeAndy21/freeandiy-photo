@@ -2,7 +2,7 @@
 //! and Script Events Manager, plus the session state the File-menu commands share
 //! ([`FileMenuState`]).
 //!
-//! "Scripts" are FreeANDIY Photo action scripts: JSON (`[[id, params], …]`, `{"steps": …}` or a
+//! "Scripts" are PhotoCraft action scripts: JSON (`[[id, params], …]`, `{"steps": …}` or a
 //! droplet) or a plain-text list with one `command.id {json params}` per line (`#` comments).
 //! Droplets are JSON files (`.pcdroplet`) holding an action plus batch options; `freeandiy-photo-cli
 //! droplet <file> <inputs…>` runs one, and on Unix a `.command` shim makes it

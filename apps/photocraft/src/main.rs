@@ -97,7 +97,7 @@ fn native_options(custom_titlebar: bool) -> eframe::NativeOptions {
 
 /// Grow a restored window that is smaller than the minimum size, keeping its centre. On
 /// Windows, eframe saves a minimized window's size (160 pt wide, 64 pt tall once eframe has
-/// clamped it), and the minimum size isn't applied to a restored one: FreeANDIY Photo then reopened
+/// clamped it), and the minimum size isn't applied to a restored one: PhotoCraft then reopened
 /// as a 160 × 64 strip on every launch.
 fn at_least_min_size(mut builder: egui::ViewportBuilder) -> egui::ViewportBuilder {
     let (Some(size), Some(min)) = (builder.inner_size, builder.min_inner_size) else { return builder };

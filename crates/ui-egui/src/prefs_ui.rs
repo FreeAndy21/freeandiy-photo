@@ -1508,7 +1508,7 @@ fn section_fields(
                     let c = prefs::parse_hex(s).unwrap_or([128, 128, 128]);
                     let mut rgb = c;
                     ui.horizontal(|ui| {
-                        // FreeANDIY Photo's Color Picker, as everywhere else (#2144).
+                        // PhotoCraft's Color Picker, as everywhere else (#2144).
                         if crate::widgets::color_swatch_button(ui, egui::Color32::from_rgb(rgb[0], rgb[1], rgb[2]), &label).clicked() {
                             ui.ctx().data_mut(|d| d.insert_temp(egui::Id::new(PICK_ID), (path.clone(), label.clone())));
                         }
@@ -2217,7 +2217,7 @@ mod tests {
         appearance_frame(&mut app, &ctx, Some(egui::Theme::Light));
         assert_palette(&ctx, ThemeKind::StudioLight);
         assert_eq!(app.session.prefs().interface.appearance_mode, AppearanceMode::Auto);
-        // A restored pin must also clear when the concrete FreeANDIY Photo palette stays the same.
+        // A restored pin must also clear when the concrete PhotoCraft palette stays the same.
         ctx.set_theme(egui::ThemePreference::Dark);
         appearance_frame(&mut app, &ctx, Some(egui::Theme::Light));
         assert_eq!(ctx.options(|o| o.theme_preference), egui::ThemePreference::System);

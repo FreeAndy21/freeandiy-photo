@@ -1,4 +1,4 @@
-//! Invert: a minimal FreeANDIY Photo filter plug-in (plug-in ABI v1, see `docs/plugins.md`).
+//! Invert: a minimal PhotoCraft filter plug-in (plug-in ABI v1, see `docs/plugins.md`).
 //!
 //! `no_std`, no allocator, no imports: the host hands us an interleaved `f32` buffer and we
 //! invert the colour channels in place, leaving alpha (and fully transparent pixels) alone,

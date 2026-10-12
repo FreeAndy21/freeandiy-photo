@@ -43,7 +43,7 @@
   <key>NSRequiresAquaSystemAppearance</key>
   <false/>
   <key>NSHumanReadableCopyright</key>
-  <string>Copyright © the FreeANDIY Photo authors. MIT OR Apache-2.0.</string>
+  <string>Copyright © Free Andy Agency and the PhotoCraft authors. MIT OR Apache-2.0.</string>
 
   <!-- Photocraft's own format. -->
   <key>UTExportedTypeDeclarations</key>

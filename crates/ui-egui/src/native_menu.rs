@@ -3,17 +3,17 @@
 //!
 //! Pure and platform-free, so it is tested everywhere and builds for the web; only the backend
 //! touches AppKit. What the layout does ([`mac_layout`]):
-//! - an **app menu** named FreeANDIY Photo: About (from Help), Settings (Edit › Preferences), Language,
+//! - an **app menu** named PhotoCraft: About (from Help), Settings (Edit › Preferences), Language,
 //!   Appearance (Window › Theme), Services, Hide, Hide Others, Show All and Quit (File › Exit,
 //!   still the app's own `file.exit` so the unsaved-changes prompt runs). The other Craft apps
 //!   use the same app menu;
 //! - **Window** gets Minimize, Zoom and Bring All to Front, with the open documents after it
 //!   (where a Mac app lists its windows), and **Help** the system search field;
-//! - **clashes** with the system's keys (⌘H, ⌘M, ⌘W, ⌘,) are resolved in FreeANDIY Photo's favour, and
+//! - **clashes** with the system's keys (⌘H, ⌘M, ⌘W, ⌘,) are resolved in PhotoCraft's favour, and
 //!   reported; Hide and Minimize move to ⌃⌘H and ⌃⌘M, as Photoshop does.
 //!
 //! **Keys stay with egui.** AppKit runs a menu's key equivalents before the window sees the key,
-//! which would skip FreeANDIY Photo's key rules (text fields keep ⌘C/⌘V/⌘Z, dialogs and Camera Raw are
+//! which would skip PhotoCraft's key rules (text fields keep ⌘C/⌘V/⌘Z, dialogs and Camera Raw are
 //! modal, Liquify has its own ⌘Z). So the backend reports a key equivalent as [`Event::Key`], and
 //! [`NativeMenu::raw_input`] feeds it to egui as the key press it was: the shortcut runs through
 //! [`crate::shortcuts::handle`] exactly as without a native menu. A click is [`Event::Click`] and
@@ -103,7 +103,7 @@ pub enum Standard {
     CloseWindow,
 }
 
-/// Hide FreeANDIY Photo: a custom item (the predefined one always takes ⌘H, which is View › Extras).
+/// Hide PhotoCraft: a custom item (the predefined one always takes ⌘H, which is View › Extras).
 pub const HIDE: &str = "app.hide";
 /// Minimize: a custom item (the predefined one always takes ⌘M, which is Curves).
 pub const MINIMIZE: &str = "window.minimize";
@@ -289,7 +289,7 @@ fn hash_nodes(nodes: &[Node], h: &mut DefaultHasher) {
 
 // ----------------------------------------------------------------------------- shortcuts
 
-/// A shortcut as FreeANDIY Photo writes it (`Cmd+Shift+Z`). `Cmd` is ⌘ and `Ctrl` the Control key,
+/// A shortcut as PhotoCraft writes it (`Cmd+Shift+Z`). `Cmd` is ⌘ and `Ctrl` the Control key,
 /// never folded together: ⌃⌘M and ⌘M are different shortcuts.
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 pub struct Chord {
@@ -365,13 +365,13 @@ impl Chord {
 
 // ----------------------------------------------------------------------------- macOS layout
 
-/// A system key equivalent FreeANDIY Photo already uses for something else.
+/// A system key equivalent PhotoCraft already uses for something else.
 #[derive(Clone, Debug, PartialEq)]
 pub struct Clash {
     pub shortcut: &'static str,
     /// What macOS uses it for.
     pub system: &'static str,
-    /// The FreeANDIY Photo command bound to it.
+    /// The PhotoCraft command bound to it.
     pub command: String,
     /// What the layout did about it.
     pub resolution: &'static str,
@@ -382,7 +382,7 @@ pub struct Layout {
     pub clashes: Vec<Clash>,
 }
 
-/// Turn FreeANDIY Photo's menus (tagged with roles) into a Mac menu bar. See the module docs.
+/// Turn PhotoCraft's menus (tagged with roles) into a Mac menu bar. See the module docs.
 pub fn mac_layout(bar: &MenuBar, lang: Lang) -> Layout {
     let mut bar = bar.clone();
     let mut clashes = Vec::new();
@@ -490,7 +490,7 @@ pub fn mac_layout(bar: &MenuBar, lang: Lang) -> Layout {
 }
 
 /// Settings in the app menu: Edit › Preferences, a submenu of settings pages, becomes "Settings"
-/// with ⌘, on its first page unless FreeANDIY Photo binds ⌘, elsewhere.
+/// with ⌘, on its first page unless PhotoCraft binds ⌘, elsewhere.
 fn settings_node(node: Node, comma_taken: Option<String>, lang: Lang, clashes: &mut Vec<Clash>) -> Node {
     if let Some(command) = &comma_taken {
         clashes.push(Clash { shortcut: "Cmd+,", system: "Settings", command: command.clone(), resolution: "Settings has no shortcut" });
@@ -597,7 +597,7 @@ fn translate(bar: &mut MenuBar, lang: Lang) {
     }
 }
 
-/// FreeANDIY Photo's menus as a Mac menu bar, in the UI language; `language` is the
+/// PhotoCraft's menus as a Mac menu bar, in the UI language; `language` is the
 /// `interface.language` preference (`auto` or a code), checked in the app menu's Language.
 pub fn photocraft_layout(items: &[MenuItem], lang: Lang, language: &str) -> Layout {
     let mut bar = from_items(&crate::menus::TOP_MENUS, items);
@@ -644,7 +644,7 @@ pub trait Backend {
     fn drain(&mut self) -> Vec<Event>;
 }
 
-/// The native menu bar, while FreeANDIY Photo uses one (the in-window menus are hidden then).
+/// The native menu bar, while PhotoCraft uses one (the in-window menus are hidden then).
 pub struct NativeMenu {
     backend: Box<dyn Backend>,
     /// Hash of the state the menus were last built from.
@@ -835,7 +835,7 @@ mod tests {
         assert_eq!(titles, ["FreeANDIY Photo", "File", "Edit", "Image", "Layer", "Type", "Select", "Filter", "View", "Window", "Help"]);
     }
 
-    /// FreeANDIY Photo keeps Photoshop's ⌘H, ⌘M, ⌘W and ⌘, (Hide Layers): the system items give way.
+    /// PhotoCraft keeps Photoshop's ⌘H, ⌘M, ⌘W and ⌘, (Hide Layers): the system items give way.
     #[test]
     fn clashes_are_resolved_in_photocrafts_favour() {
         let l = layout(true);
@@ -1006,7 +1006,7 @@ mod tests {
         }
     }
 
-    /// A key equivalent reaches FreeANDIY Photo's own key handling as the key press it was, so the
+    /// A key equivalent reaches PhotoCraft's own key handling as the key press it was, so the
     /// shortcut runs once, through the same rules as without a native menu.
     #[test]
     fn key_equivalents_run_through_the_normal_shortcut_path() {
