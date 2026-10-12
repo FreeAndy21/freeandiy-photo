@@ -73,6 +73,13 @@ replace = "{{this.github}}"
 min = 1
 
 [[replace]]
+name = "upstream repo slug (raw URLs, GITHUB_REPOSITORY defaults)"
+include = ["packaging/**", ".github/**"]
+regex = 'storytold/photocraft\b'
+replace = "{{brand.github_owner}}/{{this.repo}}"
+min = 2
+
+[[replace]]
 name = "upstream product page"
 include = ["**"]
 exclude = ["**/*.md", "docs/**", "book/**", "NOTICE", "ATTRIBUTION.md"]
@@ -97,9 +104,9 @@ min = 1
 [[replace]]
 name = "translation catalog notes: ArtCraft"
 include = ["crates/ui-egui/src/i18n/*.tsv"]
-find = "PhotoCraft, ArtCraft,"
-replace = "PhotoCraft,"
-min = 5
+find = "ArtCraft, "
+replace = ""
+min = 6
 
 # ---------------------------------------------------------------------------------------------
 # Protect text that keeps the upstream name.
@@ -237,6 +244,20 @@ include = ["packaging/**", ".github/**", "Dockerfile"]
 regex = 'photocraft'
 replace = "{{this.repo}}"
 min = 100
+
+[[replace]]
+name = "AppStream brand colour (light)"
+include = ["packaging/linux/*.metainfo.xml.in"]
+find = "#9fd0ff"
+replace = "{{this.color}}"
+min = 1
+
+[[replace]]
+name = "AppStream brand colour (dark)"
+include = ["packaging/linux/*.metainfo.xml.in"]
+find = "#1f64ba"
+replace = "{{colors.black}}"
+min = 1
 
 # ---------------------------------------------------------------------------------------------
 # Restore protected text.
