@@ -117,6 +117,13 @@ replace = "{{brand.owner}} and the @@UPSTREAM@@ authors"
 min = 3
 
 [[replace]]
+name = "protect: test font names containing PhotoCraft"
+include = ["apps/**/*.rs", "crates/**/*.rs"]
+regex = 'DefinitelyMissingPhotoCraft'
+replace = 'DefinitelyMissing@@UPSTREAM@@'
+min = 1
+
+[[replace]]
 name = "protect: cargo -p / --package photocraft"
 include = ["packaging/**", ".github/**", "Dockerfile"]
 regex = '(-p|--package) photocraft'
@@ -252,6 +259,13 @@ include = ["crates/ui-egui/src/state.rs"]
 find = 'include_str!("../../../README.md")'
 replace = 'include_str!("../../../docs/upstream-README.md")'
 min = 1
+
+[[replace]]
+name = "tests: the UI font is IBM Plex Sans (font key)"
+include = ["crates/ui-egui/src/prefs_ui.rs"]
+find = 'font_data["Inter"]'
+replace = 'font_data["IBMPlexSans"]'
+min = 2
 
 [[replace]]
 name = "windows exe resources"
