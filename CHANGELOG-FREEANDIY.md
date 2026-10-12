@@ -15,7 +15,7 @@ shows every changed file.
 - Settings directory `FreeANDIY Photo` (macOS, Windows) / `freeandiy-photo` (Linux).
 - Executables `freeandiy-photo` and `freeandiy-photo-cli`; the cargo packages keep their names.
 - New app icon set (the angel Andy, Free Andy Agency) and DMG background.
-- New themes **FreeANDIY Light** (default: paper and ink) and **FreeANDIY Dark**, carried by the
+- New themes **FreeANDIY Dark** (default: ink and paper) and **FreeANDIY Light** (paper and ink), carried by the
   Studio Light and Pro Medium Gray theme slots; square corners, hairlines, no shadows.
 - UI fonts IBM Plex Sans and IBM Plex Mono (OFL 1.1).
 

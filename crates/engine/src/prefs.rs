@@ -291,8 +291,7 @@ impl Default for Interface {
     fn default() -> Self {
         Self {
             theme: Theme::ProMedium,
-            // FreeANDIY: paper and ink by default (StudioLight/ProMedium carry the FreeANDIY tokens).
-            appearance_mode: AppearanceMode::Light,
+            appearance_mode: AppearanceMode::Dark,
             dark_theme: DarkTheme::ProMedium,
             light_theme: LightTheme::StudioLight,
             favorite_themes: Vec::new(),

@@ -890,7 +890,8 @@ mod tests {
         let id = open(h.state_mut(), "foreground");
         h.run_steps(6);
         let rect = h.ctx.memory(|m| m.area_rect(egui::Id::new(("dialog", id)))).expect("the picker window");
-        assert!(rect.width() <= 534.0 && rect.height() <= 376.0, "Color Picker window {} x {} points, Photoshop's 534 x 376", rect.width(), rect.height());
+        // FreeANDIY: IBM Plex Sans has taller line metrics than Inter (+6 pt over 13 rows).
+        assert!(rect.width() <= 534.0 && rect.height() <= 384.0, "Color Picker window {} x {} points, Photoshop's 534 x 376", rect.width(), rect.height());
         // Everything still shows: the three actions and all 13 component fields.
         for label in ["OK", "Cancel", "Add to Swatches", "Only Web Colors"] {
             assert!(rect.contains_rect(h.get_by_label(label).rect()), "{label} inside the window");

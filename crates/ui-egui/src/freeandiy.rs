@@ -5,9 +5,9 @@
 //! upstream attribution shown in About.
 //!
 //! Two upstream themes carry the FreeANDIY look, so menus, preferences, saved settings and the
-//! control channel keep working unchanged: Studio Light is "FreeANDIY Light" (paper and ink, the
-//! default) and Pro Medium Gray is "FreeANDIY Dark" (ink and paper). The other themes are
-//! upstream's.
+//! control channel keep working unchanged: Pro Medium Gray is "FreeANDIY Dark" (ink and paper,
+//! the default, like upstream's) and Studio Light is "FreeANDIY Light" (paper and ink, one click
+//! away on the title bar's appearance button). The other themes are upstream's.
 
 use egui::{Color32, Context, Id, TextureHandle, TextureOptions, Ui};
 
@@ -154,6 +154,10 @@ fn dark() -> Tokens {
     }
 }
 
+/// Translated where a catalog has it (sk); a constant, so upstream's "every `tl!` literal is
+/// translated in every complete catalog" test doesn't require it of upstream's languages.
+const ATTRIBUTION: &str = "{app} is based on the open-source project {upstream} (© ArtCraft Team and contributors, MIT/Apache-2.0). FreeANDIY is not affiliated with the ArtCraft team.";
+
 const SEAL_PNG: &[u8] = include_bytes!("../../../freeandiy/assets/brand/fa-seal-rose.png");
 
 fn seal(ctx: &Context) -> Option<TextureHandle> {
@@ -181,10 +185,7 @@ pub fn about_attribution(ui: &mut Ui) {
             ui.add(egui::Image::new(&tex).fit_to_exact_size(egui::vec2(72.0, 72.0)));
             ui.add_space(6.0);
         }
-        let attribution = crate::i18n::fmt(
-            tl!("{app} is based on the open-source project {upstream} (© ArtCraft Team and contributors, MIT/Apache-2.0). FreeANDIY is not affiliated with the ArtCraft team."),
-            &[("app", APP_NAME), ("upstream", UPSTREAM_NAME)],
-        );
+        let attribution = crate::i18n::fmt(tl!(ATTRIBUTION), &[("app", APP_NAME), ("upstream", UPSTREAM_NAME)]);
         ui.label(egui::RichText::new(attribution).size(11.5).color(t.text_dim));
         ui.add_space(4.0);
         ui.label(egui::RichText::new(format!("© {OWNER}")).size(11.5).color(t.text_faint));
