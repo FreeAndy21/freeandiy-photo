@@ -12,7 +12,7 @@ use photocraft_io::ExportOptions;
 use serde_json::{Value, json};
 
 pub const USAGE: &str = "\
-freeandiy-photo-cli: headless Photocraft
+freeandiy-photo-cli: headless FreeANDIY Photo
 
 USAGE:
   freeandiy-photo-cli convert <in> <out> [--format <ext>] [--quality <1-100>] [--tiff-layers] [--tga-bits <24|32>]
