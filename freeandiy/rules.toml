@@ -11,6 +11,7 @@
 # Copied files whose placeholders are filled in at the end.
 templates = [
   "crates/ui-egui/src/freeandiy.rs",
+  "crates/ui-egui/src/i18n/sk.tsv",
 ]
 
 delete = [
@@ -294,6 +295,10 @@ min = 5
 [[copy]]
 from = "freeandiy/overlay"
 to = "."
+
+[[copy]]
+from = "freeandiy/assets/dmg"
+to = "packaging/macos/dmg"
 
 [[copy]]
 from = "freeandiy/templates/freeandiy.rs"
