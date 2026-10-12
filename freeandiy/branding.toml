@@ -14,7 +14,7 @@ domain = "freeandy.agency"
 website = "https://freeandiy.freeandy.agency"
 github_owner = "FreeAndy21"
 id_prefix = "agency.freeandy"
-maintainer = "FreeANDIY <freeandiy@freeandy.agency>"
+maintainer = "FreeANDIY <licencie@freeandy.agency>"
 
 # From Visual identity/tokens/colors.css. Accents are highlighters: use sparingly.
 [colors]
