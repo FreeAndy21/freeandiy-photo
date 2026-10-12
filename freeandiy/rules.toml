@@ -32,51 +32,6 @@ regex = '^[^#\n]*(ArtCraft|Discord)'
 min = 50
 
 # ---------------------------------------------------------------------------------------------
-# Protect text that keeps the upstream name.
-
-[[replace]]
-name = "protect: attribution 'the PhotoCraft authors'"
-include = ["apps/*/build.rs"]
-find = "Copyright (c) the PhotoCraft authors."
-replace = "Copyright (c) {{brand.owner}} and the @@UPSTREAM@@ authors."
-min = 2
-
-[[replace]]
-name = "protect: cargo -p / --package photocraft"
-include = ["packaging/**", ".github/**", "Dockerfile"]
-regex = '(-p|--package) photocraft'
-replace = '$1 @@PKG@@'
-min = 5
-
-[[replace]]
-name = "protect: crate names photocraft-<crate>"
-include = ["packaging/**", ".github/**", "Dockerfile"]
-regex = 'photocraft-(geom|color|cms|raster|doc|ops|psd|codecs|raw|affinity|compose|gpu|paint|algo|io|text|vector|format|automation|plugins|engine|ui-egui|testkit|tablet|heif|web|corpus)\b'
-replace = '@@PKG@@-$1'
-min = 1
-
-[[replace]]
-name = "protect: source paths apps/photocraft"
-include = ["packaging/**", ".github/**", "Dockerfile"]
-regex = '(apps[/\\])photocraft'
-replace = '${1}@@PKG@@'
-min = 1
-
-[[replace]]
-name = "protect: crate idents photocraft_"
-include = ["packaging/**", ".github/**", "Dockerfile"]
-find = "photocraft_"
-replace = "@@PKG@@_"
-min = 0
-
-[[replace]]
-name = "protect: WiX sources photocraft.wxs/.wxl"
-include = ["packaging/**", ".github/**", "Dockerfile"]
-regex = 'photocraft(\.wxs|\.en-us\.wxl)'
-replace = '@@PKG@@${1}'
-min = 1
-
-# ---------------------------------------------------------------------------------------------
 # Identifiers, maintainers, URLs.
 
 [[replace]]
@@ -145,6 +100,51 @@ include = ["crates/ui-egui/src/i18n/*.tsv"]
 find = "PhotoCraft, ArtCraft,"
 replace = "PhotoCraft,"
 min = 5
+
+# ---------------------------------------------------------------------------------------------
+# Protect text that keeps the upstream name.
+
+[[replace]]
+name = "protect: attribution 'the PhotoCraft authors'"
+include = ["apps/*/build.rs"]
+find = "Copyright (c) the PhotoCraft authors."
+replace = "Copyright (c) {{brand.owner}} and the @@UPSTREAM@@ authors."
+min = 2
+
+[[replace]]
+name = "protect: cargo -p / --package photocraft"
+include = ["packaging/**", ".github/**", "Dockerfile"]
+regex = '(-p|--package) photocraft'
+replace = '$1 @@PKG@@'
+min = 5
+
+[[replace]]
+name = "protect: crate names photocraft-<crate>"
+include = ["packaging/**", ".github/**", "Dockerfile"]
+regex = 'photocraft-(geom|color|cms|raster|doc|ops|psd|codecs|raw|affinity|compose|gpu|paint|algo|io|text|vector|format|automation|plugins|engine|ui-egui|testkit|tablet|heif|web|corpus)\b'
+replace = '@@PKG@@-$1'
+min = 1
+
+[[replace]]
+name = "protect: source paths apps/photocraft"
+include = ["packaging/**", ".github/**", "Dockerfile"]
+regex = '(apps[/\\])photocraft'
+replace = '${1}@@PKG@@'
+min = 1
+
+[[replace]]
+name = "protect: crate idents photocraft_"
+include = ["packaging/**", ".github/**", "Dockerfile"]
+find = "photocraft_"
+replace = "@@PKG@@_"
+min = 0
+
+[[replace]]
+name = "protect: WiX sources photocraft.wxs/.wxl"
+include = ["packaging/**", ".github/**", "Dockerfile"]
+regex = 'photocraft(\.wxs|\.en-us\.wxl)'
+replace = '@@PKG@@${1}'
+min = 1
 
 # ---------------------------------------------------------------------------------------------
 # The product name in the UI, messages, translations, packaging and the web page.
