@@ -58,18 +58,16 @@ min = 1
 
 [[replace]]
 name = "upstream issues URL"
-include = ["**"]
-exclude = ["**/*.md", "docs/**", "book/**", "NOTICE", "ATTRIBUTION.md"]
+include = ["packaging/**", ".github/**"]
 find = "https://github.com/storytold/photocraft/issues"
 replace = "{{this.issues}}"
 min = 0
 
 [[replace]]
 name = "upstream repository URL"
-include = ["**"]
-exclude = ["**/*.md", "docs/**", "book/**", "NOTICE", "ATTRIBUTION.md", "xtask/**"]
-regex = 'https://github\.com/storytold/photocraft\b'
-replace = "{{this.github}}"
+include = ["packaging/**", ".github/**"]
+regex = 'https://github\.com/storytold/photocraft(/|"|<|$)'
+replace = "{{this.github}}${1}"
 min = 1
 
 [[replace]]
@@ -81,8 +79,7 @@ min = 2
 
 [[replace]]
 name = "upstream product page"
-include = ["**"]
-exclude = ["**/*.md", "docs/**", "book/**", "NOTICE", "ATTRIBUTION.md"]
+include = ["packaging/**", ".github/**"]
 find = "https://getartcraft.com/apps/photocraft"
 replace = "{{this.page}}"
 min = 3
@@ -113,10 +110,10 @@ min = 6
 
 [[replace]]
 name = "protect: attribution 'the PhotoCraft authors'"
-include = ["apps/*/build.rs"]
-find = "Copyright (c) the PhotoCraft authors."
-replace = "Copyright (c) {{brand.owner}} and the @@UPSTREAM@@ authors."
-min = 2
+include = ["apps/*/build.rs", "packaging/**"]
+find = "the PhotoCraft authors"
+replace = "{{brand.owner}} and the @@UPSTREAM@@ authors"
+min = 3
 
 [[replace]]
 name = "protect: cargo -p / --package photocraft"
@@ -176,6 +173,7 @@ include = ["**/*.rs", "**/*.tsv", "packaging/**", "apps/photocraft-web/index.htm
 exclude = ["crates/codecs/tests/orientation.rs", "crates/cms/**"]
 regex = 'PhotoCraft([A-Z])'
 replace = 'FreeANDIYPhoto${1}'
+skip_comments = ["//"]
 min = 3
 
 [[replace]]
@@ -186,12 +184,21 @@ replace = "{{this.name}}"
 min = 1
 
 [[replace]]
-name = "product name PhotoCraft"
-include = ["**/*.rs", "**/*.tsv", "packaging/**", "apps/photocraft-web/index.html", ".github/**", "Dockerfile"]
-exclude = ["crates/codecs/tests/orientation.rs", "crates/cms/**", "crates/ui-egui/src/i18n/LICENSE-translations.txt", "**/*.md"]
+name = "product name PhotoCraft (Rust code, not comments)"
+include = ["**/*.rs"]
+exclude = ["crates/codecs/tests/orientation.rs", "crates/cms/**", "xtask/**"]
 find = "PhotoCraft"
 replace = "{{this.name}}"
-min = 400
+skip_comments = ["//"]
+min = 150
+
+[[replace]]
+name = "product name PhotoCraft"
+include = ["**/*.tsv", "packaging/**", "apps/photocraft-web/index.html", ".github/**", "Dockerfile"]
+exclude = ["crates/ui-egui/src/i18n/LICENSE-translations.txt", "**/*.md"]
+find = "PhotoCraft"
+replace = "{{this.name}}"
+min = 300
 
 # ---------------------------------------------------------------------------------------------
 # Executables, settings directory, packaging file names.

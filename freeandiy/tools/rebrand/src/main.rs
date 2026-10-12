@@ -73,6 +73,10 @@ struct Replace {
     /// Fail when fewer matches than this are found (0 = optional rule).
     #[serde(default = "one")]
     min: usize,
+    /// Leave lines alone whose first non-blank text starts with one of these (e.g. "//"), so
+    /// code comments keep describing upstream's work truthfully.
+    #[serde(default)]
+    skip_comments: Vec<String>,
 }
 
 fn one() -> usize {
@@ -209,6 +213,28 @@ fn read_text(path: &Path) -> Option<String> {
     String::from_utf8(bytes).ok()
 }
 
+/// Replace every match of `re` in `text`, except on lines starting with a `skip` prefix (only
+/// whole-line comments; with no prefixes the text is replaced as one string, so regexes may span
+/// lines). Returns the new text and the number of replacements.
+fn replace_text(text: &str, re: &Regex, with: &str, skip: &[String]) -> (String, usize) {
+    if skip.is_empty() {
+        let count = re.find_iter(text).count();
+        return (re.replace_all(text, with).into_owned(), count);
+    }
+    let mut count = 0;
+    let mut out = String::with_capacity(text.len());
+    for line in text.split_inclusive('\n') {
+        let trimmed = line.trim_start();
+        if skip.iter().any(|p| trimmed.starts_with(p.as_str())) {
+            out.push_str(line);
+        } else {
+            count += re.find_iter(line).count();
+            out.push_str(&re.replace_all(line, with));
+        }
+    }
+    (out, count)
+}
+
 fn copy_path(from: &Path, to: &Path) -> Result<usize> {
     if from.is_dir() {
         let mut n = 0;
@@ -291,10 +317,10 @@ fn apply(root: &Path) -> Result<()> {
         for f in select(&files, &r.include, &r.exclude)? {
             let path = root.join(f);
             let Some(text) = read_text(&path) else { continue };
-            let count = re.find_iter(&text).count();
+            let (out, count) = replace_text(&text, &re, &r.replace, &r.skip_comments);
             if count > 0 {
                 n += count;
-                fs::write(&path, re.replace_all(&text, r.replace.as_str()).as_ref())?;
+                fs::write(&path, out)?;
             }
         }
         if n < r.min {
@@ -375,5 +401,15 @@ mod tests {
         let vars = BTreeMap::from([("a.b".to_string(), "X".to_string())]);
         assert_eq!(expand("1{{a.b}}2{{ a.b }}", &vars).unwrap(), "1X2X");
         assert!(expand("{{nope}}", &vars).is_err());
+    }
+
+    #[test]
+    fn skip_comments_leaves_comment_lines() {
+        let re = Regex::new("PhotoCraft").unwrap();
+        let text = "// PhotoCraft's own\nlet a = \"PhotoCraft\";\n  /// PhotoCraft doc\n";
+        let (out, n) = replace_text(text, &re, "X", &["//".to_string()]);
+        assert_eq!(n, 1);
+        assert_eq!(out, "// PhotoCraft's own\nlet a = \"X\";\n  /// PhotoCraft doc\n");
+        assert_eq!(replace_text(text, &re, "X", &[]).1, 3);
     }
 }
