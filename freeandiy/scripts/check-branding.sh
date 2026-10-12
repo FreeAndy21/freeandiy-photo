@@ -17,13 +17,16 @@ cd "$ROOT"
 fail=0
 
 BANNED='ArtCraft|artcraft|storyteller|getartcraft|discord\.gg|Crafting Apps'
+# Allowed mentions: the About attribution (English and translated), the copyright line, upstream's
+# credit for its own tool glyphs (comments inside the SVGs), and test fixture names.
+ALLOWED_STRINGS='based on the open-source project|affiliated with the ArtCraft team|ArtCraft Team and contributors|ArtCraft Team a prispievatelia|the PhotoCraft authors|PhotoCraft.s own|DefinitelyMissingPhotoCraft|^PhotoCraft$'
 # Where upstream's names may appear: licences and notices (must stay), upstream's developer
 # docs (not shipped), credits, code comments about upstream work, and our own freeandiy/ sources.
 ALLOW=(':!NOTICE' ':!LICENSE-*' ':!**/LICENSE*' ':!ATTRIBUTION.md' ':!docs/**' ':!book/**' ':!*.md'
   ':!contributors/**' ':!freeandiy/**' ':!crates/ui-egui/src/freeandiy.rs')
 
 echo "== source: upstream brand terms"
-if hits="$(git grep -n -I -E "$BANNED" -- . "${ALLOW[@]}" | grep -v -E '^[^:]+:[0-9]+:\s*(//|#|<!--|\*)' || true)" && [ -n "$hits" ]; then
+if hits="$(git grep -n -I -E "$BANNED" -- . "${ALLOW[@]}" | grep -v -E '^[^:]+:[0-9]+:\s*(//|#|<!--|\*)' | grep -v -E "$ALLOWED_STRINGS" || true)" && [ -n "$hits" ]; then
   echo "$hits" | head -50
   echo "FAIL: upstream brand terms above (remove them or add a rule in freeandiy/rules.toml)"
   fail=1
@@ -39,7 +42,7 @@ hits="$(
     git grep -n -I 'PhotoCraft' -- packaging apps/photocraft-web/index.html ':!*.md' | grep -v -E 'the PhotoCraft authors' || true
     git grep -n -I -E '"[^"]*PhotoCraft[^"]*"' -- '*.rs' ':!xtask/**' ':!freeandiy/**' ':!crates/cms/**' ':!crates/codecs/tests/**' ':!crates/ui-egui/src/freeandiy.rs' \
       | grep -v -E '^[^:]+:[0-9]+:\s*//' | grep -v -E 'the PhotoCraft authors' || true
-  } | sort -u
+  } | { grep -v -E "$ALLOWED_STRINGS" || true; } | sort -u
 )"
 if [ -n "$hits" ]; then
   echo "$hits" | head -50
@@ -49,8 +52,6 @@ else
   echo "ok"
 fi
 
-# The attribution sentence (About) and the copyright line are the only allowed mentions.
-ALLOWED_STRINGS='based on the open-source project|affiliated with the ArtCraft team|ArtCraft Team and contributors|the PhotoCraft authors|^PhotoCraft$'
 for target in "$@"; do
   echo "== artifact: $target"
   files=()
