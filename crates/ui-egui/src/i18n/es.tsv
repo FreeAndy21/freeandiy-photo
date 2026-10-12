@@ -2728,3 +2728,9 @@ curves	Smooth	Suavizar
 	Light Red	Rojo claro
 	Medium Blue	Azul medio
 	Light Gray	Gris claro
+	Import Styles…	Importar estilos…
+	Export Selected Styles…	Exportar estilos seleccionados…
+	Export Styles…	Exportar estilos…
+	{file} is not a style library (.asl)	{file} no es una biblioteca de estilos (.asl)
+@plural	Imported {n} style from {file}|Imported {n} styles from {file}	Se importó {n} estilo de {file}|Se importaron {n} estilos de {file}
+@plural	Exported {n} style to {file}|Exported {n} styles to {file}	Se exportó {n} estilo a {file}|Se exportaron {n} estilos a {file}

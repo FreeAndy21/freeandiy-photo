@@ -3048,3 +3048,9 @@ curves	Smooth	Lisser
 	Light Red	Rouge clair
 	Medium Blue	Bleu moyen
 	Light Gray	Gris clair
+	Import Styles…	Importer des styles…
+	Export Selected Styles…	Exporter les styles sélectionnés…
+	Export Styles…	Exporter les styles…
+	{file} is not a style library (.asl)	{file} n’est pas une bibliothèque de styles (.asl)
+@plural	Imported {n} style from {file}|Imported {n} styles from {file}	{n} style importé depuis {file}|{n} styles importés depuis {file}
+@plural	Exported {n} style to {file}|Exported {n} styles to {file}	{n} style exporté vers {file}|{n} styles exportés vers {file}

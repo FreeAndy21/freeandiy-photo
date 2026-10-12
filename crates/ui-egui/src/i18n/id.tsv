@@ -3035,3 +3035,9 @@ curves	Smooth	Haluskan
 	Light Red	Merah Terang
 	Medium Blue	Biru Sedang
 	Light Gray	Abu-abu Muda
+	Import Styles…	Impor Gaya…
+	Export Selected Styles…	Ekspor Gaya Terpilih…
+	Export Styles…	Ekspor Gaya…
+	{file} is not a style library (.asl)	{file} bukan pustaka gaya (.asl)
+@plural	Imported {n} style from {file}|Imported {n} styles from {file}	{n} gaya diimpor dari {file}
+@plural	Exported {n} style to {file}|Exported {n} styles to {file}	{n} gaya diekspor ke {file}

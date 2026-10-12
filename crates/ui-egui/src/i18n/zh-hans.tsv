@@ -2652,3 +2652,9 @@ curves	Smooth	平滑
 	Light Red	浅红色
 	Medium Blue	中蓝色
 	Light Gray	浅灰色
+	Import Styles…	导入样式…
+	Export Selected Styles…	导出所选样式…
+	Export Styles…	导出样式…
+	{file} is not a style library (.asl)	{file} 不是样式库 (.asl)
+@plural	Imported {n} style from {file}|Imported {n} styles from {file}	已从 {file} 导入 {n} 个样式
+@plural	Exported {n} style to {file}|Exported {n} styles to {file}	已将 {n} 个样式导出到 {file}
