@@ -268,6 +268,13 @@ replace = 'font_data["IBMPlexSans"]'
 min = 2
 
 [[replace]]
+name = "CLI help and exported LUT comment ('Photocraft')"
+include = ["apps/photocraft-cli/src/lib.rs", "crates/engine/src/file_cmds.rs"]
+regex = '(headless|Created by) Photocraft'
+replace = '${1} {{this.name}}'
+min = 2
+
+[[replace]]
 name = "windows exe resources"
 include = ["apps/*/build.rs"]
 regex = '"photocraft(\.exe)?"'
