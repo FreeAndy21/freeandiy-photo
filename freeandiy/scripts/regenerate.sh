@@ -5,7 +5,8 @@
 #
 #   freeandiy/scripts/regenerate.sh [--check] [--keep] [UPSTREAM_REF]
 #
-#   UPSTREAM_REF  upstream commit to build on (default: upstream-main)
+#   UPSTREAM_REF  upstream commit to build on (default: upstream-main; with --check: the commit
+#                 recorded in HEAD's .freeandiy-upstream)
 #   --check       don't commit: exit 1 if HEAD's tree differs from the regenerated one (CI)
 #   --keep        keep the temporary worktree for inspection
 #
@@ -17,7 +18,7 @@
 # always regenerated, so never edit them by hand on `main`.
 set -euo pipefail
 
-CHECK=0 KEEP=0 REF=upstream-main
+CHECK=0 KEEP=0 REF=
 for a in "$@"; do
   case "$a" in
     --check) CHECK=1 ;;
@@ -29,6 +30,13 @@ done
 
 ROOT="$(git rev-parse --show-toplevel)"
 cd "$ROOT"
+if [ -z "$REF" ]; then
+  if [ "$CHECK" = 1 ] && git cat-file -e HEAD:.freeandiy-upstream 2>/dev/null; then
+    REF="$(git show HEAD:.freeandiy-upstream | tr -d '[:space:]')"
+  else
+    REF=upstream-main
+  fi
+fi
 UPSTREAM="$(git rev-parse --verify "$REF^{commit}")"
 if [ "$CHECK" = 0 ] && [ -n "$(git status --porcelain)" ]; then
   echo "error: working tree not clean; commit your freeandiy/ changes first" >&2
@@ -49,6 +57,8 @@ rsync -a --delete --exclude 'tools/rebrand/target/' --exclude '.venv/' "$ROOT/fr
 REBRAND="$ROOT/freeandiy/tools/rebrand/target/release/freeandiy-rebrand"
 cargo build --quiet --release --manifest-path "$ROOT/freeandiy/tools/rebrand/Cargo.toml"
 "$REBRAND" apply "$WORK/tree"
+# Which upstream commit this tree is built from (CI's --check reads it back).
+git rev-parse "$UPSTREAM" >"$WORK/tree/.freeandiy-upstream"
 
 git -C "$WORK/tree" add -A
 TREE="$(git -C "$WORK/tree" write-tree)"

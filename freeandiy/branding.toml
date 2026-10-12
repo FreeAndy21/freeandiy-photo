@@ -55,6 +55,10 @@ upstream_name = "PhotoCraft"
 monogram = "Ph"
 color = "#A3DDFA"
 label = "black"
+# Windows Installer ids: new GUIDs so FreeANDIY never upgrades or replaces a PhotoCraft install.
+# Never change them once released (MSI upgrades match on the UpgradeCode).
+msi_upgrade_code = "BACBA0AE-759D-4233-8188-373626E5857A"
+msi_component_guid = "E9712E68-F674-4641-BE9D-8A3FA96C4832"
 
 [apps.light]
 name = "FreeANDIY Light"

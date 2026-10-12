@@ -267,6 +267,20 @@ find = "#1f64ba"
 replace = "{{colors.black}}"
 min = 1
 
+[[replace]]
+name = "MSI UpgradeCode (new GUID)"
+include = ["packaging/windows/*.wxs"]
+find = "D9660F32-2D0A-4ABE-B73D-17BE25F1542C"
+replace = "{{this.msi_upgrade_code}}"
+min = 1
+
+[[replace]]
+name = "MSI component GUID (new GUID)"
+include = ["packaging/windows/*.wxs"]
+find = "A6DE41B7-A80F-4C59-A17E-BB68065BF67E"
+replace = "{{this.msi_component_guid}}"
+min = 1
+
 # ---------------------------------------------------------------------------------------------
 # Restore protected text.
 
