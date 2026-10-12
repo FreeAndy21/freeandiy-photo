@@ -1,0 +1,165 @@
+# FreeANDIY branding: the single source of truth for this fork.
+# Modified-by: FreeANDIY (Free Andy Agency), 2026. New file, not part of upstream PhotoCraft.
+#
+# Everything outside freeandiy/ is generated from upstream + this directory by the rebrand tool
+# (freeandiy/tools/rebrand). Never hand-edit upstream files on `main`; change this file, a rule in
+# rules.toml or a patch in patches/ instead.
+
+app = "photo" # which [apps.<id>] entry this repository builds
+
+[brand]
+name = "FreeANDIY"
+owner = "Free Andy Agency"
+domain = "freeandy.agency"
+website = "https://freeandiy.freeandy.agency"
+github_owner = "FreeAndy21"
+id_prefix = "agency.freeandy"
+maintainer = "FreeANDIY <freeandiy@freeandy.agency>"
+
+# From Visual identity/tokens/colors.css. Accents are highlighters: use sparingly.
+[colors]
+black = "#231F20"
+paper = "#F3F2F1"
+white = "#FFFFFF"
+rose = "#BE3E6B"
+pink = "#EA9999"
+azure = "#A3DDFA"
+yellow = "#FFD966"
+green = "#A7E48B"
+ink_70 = "#231F20B3"
+ink_50 = "#231F2080"
+ink_30 = "#231F204D"
+ink_15 = "#231F2026"
+ink_08 = "#231F2014"
+
+# From Visual identity/tokens/typography.css. All OFL 1.1, bundled under freeandiy/assets/fonts/.
+[fonts]
+mono = "IBM Plex Mono" # headings, short text, UI labels
+sans = "IBM Plex Sans" # UI where mono is too wide
+body = "Roboto"        # long-form text
+
+# From Visual identity/tokens/spacing.css: print-flat, square, hairlines instead of shadows.
+[shape]
+radius = 0
+radius_sm = 2
+radius_md = 4
+hairline = 1.0
+
+# App family. `color` is the icon field; colour = category, monogram = app.
+# Category hues come from the four highlighters; siblings vary saturation/lightness.
+[apps.photo]
+name = "FreeANDIY Photo"
+repo = "freeandiy-photo"
+upstream = "storytold/photocraft"
+upstream_name = "PhotoCraft"
+monogram = "Ph"
+color = "#A3DDFA"
+label = "black"
+
+[apps.light]
+name = "FreeANDIY Light"
+repo = "freeandiy-light"
+upstream = "storytold/lightcraft"
+upstream_name = "LightCraft"
+monogram = "Li"
+color = "#7DC1E3"
+label = "black"
+
+[apps.vector]
+name = "FreeANDIY Vector"
+repo = "freeandiy-vector"
+upstream = "storytold/vectorcraft"
+upstream_name = "VectorCraft"
+monogram = "Ve"
+color = "#FFD966"
+label = "black"
+
+[apps.layout]
+name = "FreeANDIY Layout"
+repo = "freeandiy-layout"
+upstream = "storytold/designcraft"
+upstream_name = "DesignCraft"
+monogram = "La"
+color = "#F2DFA6"
+label = "black"
+
+[apps.effects]
+name = "FreeANDIY Effects"
+repo = "freeandiy-effects"
+upstream = "storytold/effectcraft"
+upstream_name = "EffectCraft"
+monogram = "Ef"
+color = "#FFCC33"
+label = "black"
+
+[apps.film]
+name = "FreeANDIY Film"
+repo = "freeandiy-film"
+upstream = "storytold/filmcraft"
+upstream_name = "FilmCraft"
+monogram = "Fi"
+color = "#EA9999"
+label = "black"
+
+[apps.sound]
+name = "FreeANDIY Sound"
+repo = "freeandiy-sound"
+upstream = "storytold/soundcraft"
+upstream_name = "SoundCraft"
+monogram = "So"
+color = "#D47C7C"
+label = "black"
+
+[apps.write]
+name = "FreeANDIY Write"
+repo = "freeandiy-write"
+upstream = "storytold/wordcraft"
+upstream_name = "WordCraft"
+monogram = "Wr"
+color = "#A7E48B"
+label = "black"
+
+[apps.sheets]
+name = "FreeANDIY Sheets"
+repo = "freeandiy-sheets"
+upstream = "storytold/gridcraft"
+upstream_name = "GridCraft"
+monogram = "Sh"
+color = "#85CE64"
+label = "black"
+
+[apps.slides]
+name = "FreeANDIY Slides"
+repo = "freeandiy-slides"
+upstream = "storytold/deckcraft"
+upstream_name = "DeckCraft"
+monogram = "Sl"
+color = "#C6DCBB"
+label = "black"
+
+[apps.pdf]
+name = "FreeANDIY PDF"
+repo = "freeandiy-pdf"
+upstream = "storytold/pdfcraft"
+upstream_name = "PdfCraft"
+monogram = "Pd"
+color = "#A5B99C"
+label = "black"
+
+[apps.cad]
+name = "FreeANDIY CAD"
+repo = "freeandiy-cad"
+upstream = "storytold/cadcraft"
+upstream_name = "CadCraft"
+monogram = "Ca"
+color = "#BE3E6B"
+label = "paper" # black on rose is only 3.2:1
+
+[apps.launcher]
+name = "FreeANDIY Launcher"
+repo = "freeandiy-launcher"
+upstream = "storytold/craft-launcher"
+upstream_name = "Craft Launcher"
+monogram = "FA"
+color = "#231F20"
+label = "paper"
