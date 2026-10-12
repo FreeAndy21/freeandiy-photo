@@ -396,3 +396,135 @@
 	{{this.name}} — an open-source, native image editor written in Rust.	{{this.name}} — open-source natívny editor obrázkov napísaný v Ruste.
 	{app} is based on the open-source project {upstream} (© ArtCraft Team and contributors, MIT/Apache-2.0). FreeANDIY is not affiliated with the ArtCraft team.	{app} je založený na open-source projekte {upstream} (© ArtCraft Team a prispievatelia, MIT/Apache-2.0). FreeANDIY nie je spojený s tímom ArtCraft.
 	Opened {url}	Otvorené: {url}
+
+# Delete layer prompt
+	Delete layer ‘{name}’?	Odstrániť vrstvu ‘{name}’?
+	Delete {count} layers? {names}	Odstrániť vrstvy ({count})? {names}
+	Delete layer?	Odstrániť vrstvu?
+	Don't show again	Už nezobrazovať
+	The document is closed	Dokument je zatvorený
+	The document or selected layers changed. Please request deletion again.	Dokument alebo vybrané vrstvy sa zmenili. Požiadajte o odstránenie znova.
+	Missing delete command	Chýba príkaz na odstránenie
+	Invalid delete command	Neplatný príkaz na odstránenie
+	Layer deleted, but confirmation preference could not be saved: {error}	Vrstva bola odstránená, ale nastavenie potvrdenia sa nepodarilo uložiť: {error}
+
+# Bit depth
+	8 Bits/Channel	8 bitov/kanál
+	16 Bits/Channel	16 bitov/kanál
+	32 Bits/Channel	32 bitov/kanál
+	8 bit	8-bitový
+	16 bit	16-bitový
+	32 bit (float)	32-bitový (desatinný)
+	Integer	Celé čísla
+	Floating point	Desatinná čiarka
+
+# Mixer Brush, Pattern Stamp, LUT export
+	Mixer Brush	Miešací štetec
+	Mixer Brush Tool	Nástroj Miešací štetec
+	Wet	Vlhkosť
+	Load	Nanesenie
+	Mix	Miešanie
+	Flow	Prietok
+	Sample All Layers	Vzorkovať všetky vrstvy
+	Pattern Stamp Tool	Nástroj Pečiatka so vzorkou
+	Pattern Stamp	Pečiatka so vzorkou
+	Impressionist	Impresionistický
+	Aligned	Zarovnané
+	Scope	Rozsah
+	Selected	Vybrané
+
+# Select dialogs (Select and Mask, Modify)
+	Amount	Množstvo
+	Apply At Canvas Bounds	Použiť na okrajoch plátna
+	Border…	Okraj…
+	Contract…	Zúžiť…
+	Contrast	Kontrast
+	Decontaminate	Odstrániť farebný lem
+	Expand…	Rozšíriť…
+	Feather	Prelínanie
+	Feather…	Prelínanie…
+	Selection	Výber
+	New Layer	Nová vrstva
+	New Layer With Mask	Nová vrstva s maskou
+	New Document With Mask	Nový dokument s maskou
+	Output	Výstup
+	Radius	Polomer
+	Refine Edge…	Upresniť okraj…
+	Refine Strokes	Upresniť ťahy
+	Shift Edge	Posunúť okraj
+	Smart Radius	Inteligentný polomer
+	Smooth	Vyhladiť
+	Smooth…	Vyhladiť…
+
+# Camera Raw
+	Aqua	Akvamarínová
+	Balance	Vyváženie
+	Before (Y)	Pred (Y)
+	Blacks	Čierne
+	Blending	Prelínanie
+	Blue	Modrá
+	Camera Raw ({name})	Camera Raw ({name})
+	Camera Raw Filter ({layer})	Filter Camera Raw ({layer})
+	Camera Raw isn't open	Camera Raw nie je otvorený
+	Cancelled opening {name}	Otváranie {name} bolo zrušené
+	Cancelled {label}	Zrušené: {label}
+	Clarity	Čírosť
+	Color Detail	Detail farieb
+	Color Grading	Farebné odstupňovanie
+	Color Mixer	Mixér farieb
+	Color Priority	Priorita farby
+	Curve	Krivka
+	Dehaze	Odstránenie oparu
+	Detail	Detail
+	Developing {name}	Vyvoláva sa {name}
+	Effects	Efekty
+	Exposure	Expozícia
+	Full-resolution preview unavailable	Náhľad v plnom rozlíšení nie je k dispozícii
+	Global	Globálne
+	Grain	Zrno
+	Green	Zelená
+	Highlight Clipping Warning (O)	Upozornenie na orezanie svetiel (O)
+	Highlight Priority	Priorita svetiel
+	Hue	Odtieň
+	Light	Svetlo
+	Luminance	Jas
+	Luminance Detail	Detail jasu
+	Magenta	Purpurová
+	Masking	Maskovanie
+	Midpoint	Stred
+	Midtones	Stredné tóny
+	Noise Reduction	Redukcia šumu
+	Open	Otvoriť
+	Opened {name}	Otvorené: {name}
+	Orange	Oranžová
+	Paint Overlay	Prekrytie farbou
+	Purple	Fialová
+	Red	Červená
+	Roughness	Drsnosť
+	Roundness	Zaoblenie
+	Saturation	Sýtosť
+	Shadow Clipping Warning (U)	Upozornenie na orezanie tieňov (U)
+	Sharpening	Zaostrenie
+	Show Lab Color Readouts	Zobraziť hodnoty Lab
+	Show Red at 3 o'clock	Zobraziť červenú na 3. hodine
+	Show Selected Region	Zobraziť vybranú oblasť
+	Show Skin Tone Indicator	Zobraziť ukazovateľ tónu pleti
+	Show Vectorscope	Zobraziť vektorskop
+	Size	Veľkosť
+	Temperature	Teplota
+	Texture	Textúra
+	Tint	Nádych
+	Tone Histogram	Histogram tónov
+	Vibrance	Živosť
+	Vignetting	Vinetácia
+	White Balance: As Shot	Vyváženie bielej: ako pri snímaní
+	Whites	Biele
+	Yellow	Žltá
+cameraRaw	Highlights	Svetlá
+cameraRaw	Lights	Svetlejšie tóny
+cameraRaw	Shadows	Tiene
+cameraRaw	Darks	Tmavšie tóny
+	Highlights	Svetlá
+	Shadows	Tiene
+	Lights	Svetlejšie tóny
+	Darks	Tmavšie tóny
