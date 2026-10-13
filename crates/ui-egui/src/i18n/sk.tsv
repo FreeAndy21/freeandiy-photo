@@ -528,3 +528,9 @@ cameraRaw	Darks	Tmavšie tóny
 	Shadows	Tiene
 	Lights	Svetlejšie tóny
 	Darks	Tmavšie tóny
+	Tolerance	Tolerancia
+	Save Settings…	Uložiť nastavenia…
+	Load Settings…	Načítať nastavenia…
+	Save these settings as a Camera Raw .xmp file	Uložiť tieto nastavenia ako súbor Camera Raw .xmp
+	Load settings from a Camera Raw .xmp file	Načítať nastavenia zo súboru Camera Raw .xmp
+	Loaded Camera Raw settings from {file}	Nastavenia Camera Raw načítané zo súboru {file}
