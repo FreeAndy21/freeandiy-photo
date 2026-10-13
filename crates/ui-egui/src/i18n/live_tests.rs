@@ -33,7 +33,8 @@ fn ukrainian_native_app_menu_keeps_product_and_language_names() {
     with_language(Lang::EN, || {
         let h = harness();
         let layout = crate::native_menu::photocraft_layout(&crate::menus::menu_items(h.state()), lang("uk"), "uk");
-        for (id, label) in [("help.about", "Про FreeANDIY Photo"), (crate::native_menu::HIDE, "Приховати FreeANDIY Photo"), ("file.exit", "Вийти з FreeANDIY Photo")]
+        for (id, label) in
+            [("help.about", "Про FreeANDIY Photo"), (crate::native_menu::HIDE, "Приховати FreeANDIY Photo"), ("file.exit", "Вийти з FreeANDIY Photo")]
         {
             assert_eq!(layout.bar.find(id).map(|item| item.label.as_str()), Some(label), "{id}");
         }

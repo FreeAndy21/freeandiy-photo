@@ -744,10 +744,10 @@ pub fn install_fonts_with(ctx: &egui::Context, cjk: crate::cjk_fonts::Sources) {
         Some(name.to_owned())
     };
     // FreeANDIY: IBM Plex Sans for the UI, IBM Plex Mono for numbers and headings.
-    let inter = add(&mut fonts, "IBMPlexSans", crate::freeandiy::fonts::SANS_REGULAR);
-    let medium = add(&mut fonts, "IBMPlexSans-Medium", crate::freeandiy::fonts::SANS_MEDIUM);
-    let semibold = add(&mut fonts, "IBMPlexMono-SemiBold", crate::freeandiy::fonts::MONO_SEMIBOLD);
-    let mono = add(&mut fonts, "IBMPlexMono", crate::freeandiy::fonts::MONO_REGULAR);
+    let inter = add(&mut fonts, "IBMPlexSans", crate::freeandiy::fonts::sans_regular());
+    let medium = add(&mut fonts, "IBMPlexSans-Medium", crate::freeandiy::fonts::sans_medium());
+    let semibold = add(&mut fonts, "IBMPlexMono-SemiBold", crate::freeandiy::fonts::mono_semibold());
+    let mono = add(&mut fonts, "IBMPlexMono", crate::freeandiy::fonts::mono_regular());
     if let Some(inter) = inter {
         fonts.families.entry(FontFamily::Proportional).or_default().insert(0, inter);
     }
