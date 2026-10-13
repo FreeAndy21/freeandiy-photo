@@ -9,7 +9,7 @@ shows every changed file.
 
 ### Branding
 - Product name **FreeANDIY Photo** everywhere users see it: window title, menus, About, start
-  screen, messages, all 17 bundled translations, installers, desktop entries, the web page.
+  screen, messages, all bundled translations, installers, desktop entries, the web page.
 - Application id `agency.freeandy.photo` (was `ai.storyteller.photocraft`): macOS bundle id and
   UTIs, Linux desktop/metainfo/MIME/Flatpak ids, so FreeANDIY builds install next to PhotoCraft.
 - Settings directory `FreeANDIY Photo` (macOS, Windows) / `freeandiy-photo` (Linux).

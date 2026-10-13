@@ -14,7 +14,7 @@ index a6d3b493..fdc692f1 100644
  
  [dependencies]
 diff --git a/apps/photocraft/Cargo.toml b/apps/photocraft/Cargo.toml
-index 740a75b3..ffb973ef 100644
+index e5af6634..3a39a3a5 100644
 --- a/apps/photocraft/Cargo.toml
 +++ b/apps/photocraft/Cargo.toml
 @@ -3,7 +3,7 @@ name = "photocraft"

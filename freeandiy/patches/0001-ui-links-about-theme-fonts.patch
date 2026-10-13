@@ -30,10 +30,10 @@ index a601e95c..0bf88ac2 100644
      }
  
 diff --git a/crates/ui-egui/src/canvas.rs b/crates/ui-egui/src/canvas.rs
-index 804744d3..ba373bf1 100644
+index 231b4612..108e91a5 100644
 --- a/crates/ui-egui/src/canvas.rs
 +++ b/crates/ui-egui/src/canvas.rs
-@@ -2416,8 +2416,6 @@ fn start_screen(app: &mut PhotocraftApp, ui: &mut egui::Ui) {
+@@ -2534,8 +2534,6 @@ fn start_screen(app: &mut PhotocraftApp, ui: &mut egui::Ui) {
                  home_recent(app, ui, &recent);
              }
              ui.add_space(26.0);
@@ -56,10 +56,10 @@ index e5166310..73c84dad 100644
                  assert_eq!(stack.iter().filter(|n| n.starts_with(FONT_PREFIX)).count(), 3);
                  assert_eq!(stack.last().map(String::as_str), Some("system-cjk-2"), "appended last so Latin keeps Inter");
 diff --git a/crates/ui-egui/src/color_picker_ui.rs b/crates/ui-egui/src/color_picker_ui.rs
-index cfa7183a..2706a694 100644
+index 24f0afd7..d1275650 100644
 --- a/crates/ui-egui/src/color_picker_ui.rs
 +++ b/crates/ui-egui/src/color_picker_ui.rs
-@@ -890,7 +890,8 @@ mod tests {
+@@ -973,7 +973,8 @@ mod tests {
          let id = open(h.state_mut(), "foreground");
          h.run_steps(6);
          let rect = h.ctx.memory(|m| m.area_rect(egui::Id::new(("dialog", id)))).expect("the picker window");
@@ -70,10 +70,10 @@ index cfa7183a..2706a694 100644
          for label in ["OK", "Cancel", "Add to Swatches", "Only Web Colors"] {
              assert!(rect.contains_rect(h.get_by_label(label).rect()), "{label} inside the window");
 diff --git a/crates/ui-egui/src/dialogs.rs b/crates/ui-egui/src/dialogs.rs
-index 2765d0e2..d17c9eb9 100644
+index 7ae2730b..5a9f3558 100644
 --- a/crates/ui-egui/src/dialogs.rs
 +++ b/crates/ui-egui/src/dialogs.rs
-@@ -421,10 +421,10 @@ fn about_tab_body(app: &mut PhotocraftApp, ui: &mut egui::Ui, tab: &str) {
+@@ -488,10 +488,10 @@ fn about_tab_body(app: &mut PhotocraftApp, ui: &mut egui::Ui, tab: &str) {
              ui.label(crate::i18n::fmt(tl!("Version {version}"), &[("version", &photocraft_engine::build_info::long_version())]));
              ui.add_space(12.0);
              ui.vertical_centered(|ui| {
@@ -87,7 +87,7 @@ index 2765d0e2..d17c9eb9 100644
              ui.weak("egui · wgpu · photocraft-engine");
          }
 diff --git a/crates/ui-egui/src/lib.rs b/crates/ui-egui/src/lib.rs
-index d6309afc..3f8a0e85 100644
+index 6bffa813..d12374d2 100644
 --- a/crates/ui-egui/src/lib.rs
 +++ b/crates/ui-egui/src/lib.rs
 @@ -27,6 +27,7 @@ pub mod artboard_ui;
@@ -201,7 +201,7 @@ index e01a19d9..7351cf89 100644
              assert_eq!(r["url"], url);
              assert_eq!(app.ui.status, format!("Opened {url}"));
 diff --git a/crates/ui-egui/src/menus.rs b/crates/ui-egui/src/menus.rs
-index 18f1d6af..ead416c3 100644
+index 1e86407a..1ecc52f4 100644
 --- a/crates/ui-egui/src/menus.rs
 +++ b/crates/ui-egui/src/menus.rs
 @@ -78,11 +78,11 @@ pub const UI_COMMANDS: &[(&str, &str, &[&str], Option<&str>)] = &[
@@ -218,8 +218,8 @@ index 18f1d6af..ead416c3 100644
      ("window.theme.classic", "Classic Theme", &["Window", "Theme"], None),
      ("window.theme.solarizedDark", "Solarized Dark Theme", &["Window", "Theme"], None),
      ("window.theme.adwaita", "Adwaita Light Theme", &["Window", "Theme"], None),
-@@ -91,9 +91,7 @@ pub const UI_COMMANDS: &[(&str, &str, &[&str], Option<&str>)] = &[
-     ("window.theme.breezeDark", "Breeze Dark Theme", &["Window", "Theme"], None),
+@@ -93,9 +93,7 @@ pub const UI_COMMANDS: &[(&str, &str, &[&str], Option<&str>)] = &[
+     ("window.theme.softDark", "Soft Dark Theme", &["Window", "Theme"], None),
      ("window.theme.system", "Sync with system", &["Window", "Theme"], None),
      ("edit.search", "Search…", &["Edit"], Some("Cmd+F")),
 -    ("help.discord", "Join the ArtCraft Discord…", &["Help"], None),
@@ -228,7 +228,7 @@ index 18f1d6af..ead416c3 100644
      ("help.github", "PhotoCraft on GitHub", &["Help"], None),
      ("help.reportIssue", "Report an Issue…", &["Help"], None),
      ("help.systemInfo", "System Info…", &["Help"], None),
-@@ -179,7 +177,7 @@ pub(crate) fn invoke_unguarded(app: &mut PhotocraftApp, ctx: &egui::Context, id:
+@@ -189,7 +187,7 @@ pub(crate) fn invoke_unguarded(app: &mut PhotocraftApp, ctx: &egui::Context, id:
      if let Some(result) = crate::panel_docking::command(app, id, &params) {
          return result;
      }
@@ -238,10 +238,10 @@ index 18f1d6af..ead416c3 100644
          return Ok(crate::links::open(app, ctx, url));
      }
 diff --git a/crates/ui-egui/src/panels.rs b/crates/ui-egui/src/panels.rs
-index 0f6a1b83..8f8aa4aa 100644
+index 2ab7fbf7..2158a756 100644
 --- a/crates/ui-egui/src/panels.rs
 +++ b/crates/ui-egui/src/panels.rs
-@@ -589,8 +589,7 @@ pub fn title_bar(app: &mut PhotocraftApp, ui: &mut egui::Ui) {
+@@ -638,8 +638,7 @@ pub fn title_bar(app: &mut PhotocraftApp, ui: &mut egui::Ui) {
                          ("Pixel Art".to_string(), tl!("Pixel Art")),
                          ("Motion".to_string(), tl!("Motion")),
                      ];
@@ -251,7 +251,7 @@ index 0f6a1b83..8f8aa4aa 100644
                      // the switcher (Window › Workspace) before anything runs over.
                      let room = ui.available_width();
                      let icons_shown: u8 = if room >= WORKSPACE_MIN + 2.0 * ICON_SLOT {
-@@ -623,25 +622,6 @@ pub fn title_bar(app: &mut PhotocraftApp, ui: &mut egui::Ui) {
+@@ -672,25 +671,6 @@ pub fn title_bar(app: &mut PhotocraftApp, ui: &mut egui::Ui) {
                          }
                          button.context_menu(|ui| crate::prefs_ui::appearance_context_menu(app, ui));
                      }
@@ -277,7 +277,7 @@ index 0f6a1b83..8f8aa4aa 100644
                      if rtl { ui.min_rect().right() } else { ui.min_rect().left() }
                  };
                  free = if rtl { (controls_end, menus_end) } else { (menus_end, controls_end) };
-@@ -698,8 +678,6 @@ pub fn sync_window_title(app: &mut PhotocraftApp, ctx: &egui::Context) {
+@@ -747,8 +727,6 @@ pub fn sync_window_title(app: &mut PhotocraftApp, ctx: &egui::Context) {
  
  /// Minimum space kept between the window title and the menus or controls beside it.
  const TITLE_GAP: f32 = 16.0;
@@ -287,11 +287,11 @@ index 0f6a1b83..8f8aa4aa 100644
  const WORKSPACE_MIN: f32 = 90.0;
  const ICON_SLOT: f32 = 34.0;
 diff --git a/crates/ui-egui/src/theme.rs b/crates/ui-egui/src/theme.rs
-index 0719c5ce..9691ad69 100644
+index eb61cfbe..0794fcb6 100644
 --- a/crates/ui-egui/src/theme.rs
 +++ b/crates/ui-egui/src/theme.rs
-@@ -66,6 +66,9 @@ impl ThemeKind {
-         ThemeKind::BreezeDark,
+@@ -72,6 +72,9 @@ impl ThemeKind {
+         ThemeKind::SoftLight,
      ];
      pub fn label(self) -> &'static str {
 +        if let Some(label) = crate::freeandiy::theme_label(self) {
@@ -300,7 +300,7 @@ index 0719c5ce..9691ad69 100644
          match self {
              ThemeKind::Pro => "Pro (Dark)",
              ThemeKind::ProMedium => "Pro (Medium Gray)",
-@@ -191,6 +194,9 @@ impl Tokens {
+@@ -203,6 +206,9 @@ impl Tokens {
      }
  
      pub fn for_kind(kind: ThemeKind) -> Self {
@@ -310,7 +310,7 @@ index 0719c5ce..9691ad69 100644
          match kind {
              // Sampled from Photoshop 2026's default brightness (raw display values).
              ThemeKind::ProMedium => Tokens {
-@@ -737,10 +743,11 @@ pub fn install_fonts_with(ctx: &egui::Context, cjk: crate::cjk_fonts::Sources) {
+@@ -841,10 +847,11 @@ pub fn install_fonts_with(ctx: &egui::Context, cjk: crate::cjk_fonts::Sources) {
          fonts.font_data.insert(name.to_owned(), Arc::new(FontData::from_static(bytes)));
          Some(name.to_owned())
      };
@@ -326,7 +326,7 @@ index 0719c5ce..9691ad69 100644
      if let Some(inter) = inter {
          fonts.families.entry(FontFamily::Proportional).or_default().insert(0, inter);
      }
-@@ -1067,8 +1074,9 @@ mod tests {
+@@ -1179,8 +1186,9 @@ mod tests {
              assert!(contrast(t.text_faint, t.card) >= 2.0, "{kind:?} faint text");
              assert!(contrast(t.accent_text, t.card) >= 3.0, "{kind:?} accent text");
          }
@@ -338,7 +338,7 @@ index 0719c5ce..9691ad69 100644
          assert!(cards.windows(2).all(|w| w[0] < w[1]), "{cards:?}");
          assert!(!ThemeKind::Studio.is_pro() && !ThemeKind::StudioLight.is_pro() && !ThemeKind::Classic.is_pro());
          assert_eq!(ThemeKind::from_name("light gray"), Some(ThemeKind::ProLightGray));
-@@ -1095,7 +1103,8 @@ mod tests {
+@@ -1207,7 +1215,8 @@ mod tests {
          assert_eq!(ThemeKind::from_name("Solarized Dark"), Some(ThemeKind::SolarizedDark));
          assert_eq!(ThemeKind::from_name("solarized"), Some(ThemeKind::SolarizedDark));
          let m = Tokens::for_kind(ThemeKind::ProMedium);
@@ -349,10 +349,10 @@ index 0719c5ce..9691ad69 100644
          assert!(s.dark() && !s.bevel && s.kind == ThemeKind::SolarizedDark && s.card == Color32::from_rgb(7, 54, 66));
          assert_eq!(ThemeKind::from_name("neon"), None);
 diff --git a/crates/ui-egui/src/titlebar.rs b/crates/ui-egui/src/titlebar.rs
-index d02536ae..b7a3e37a 100644
+index db1963f1..c2fecd0c 100644
 --- a/crates/ui-egui/src/titlebar.rs
 +++ b/crates/ui-egui/src/titlebar.rs
-@@ -309,9 +309,8 @@ mod tests {
+@@ -613,9 +613,8 @@ mod tests {
              for a in &widgets {
                  assert!(a.right() <= min.left(), "{a:?} runs into the caption buttons at {width}");
              }
