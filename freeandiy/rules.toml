@@ -360,6 +360,10 @@ from = "freeandiy/overlay"
 to = "."
 
 [[copy]]
+from = "freeandiy/assets/screenshots/freeandiy-photo-demo.jpg"
+to = "docs/images/freeandiy-photo-demo.jpg"
+
+[[copy]]
 from = "freeandiy/assets/dmg"
 to = "packaging/macos/dmg"
 
