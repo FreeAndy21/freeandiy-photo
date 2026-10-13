@@ -1,7 +1,7 @@
 # Hosting PhotoCraft for the web
 
-`photocraft-web-<version>.zip` (from the GitHub release, or `packaging/web/package.sh`) holds a
-static site in `photocraft-web-<version>/`:
+`freeandiy-photo-<version>-web-wasm32.zip` (from the GitHub release, or `packaging/web/package.sh`) holds a
+static site in `freeandiy-photo-<version>-web-wasm32/`:
 
 | File | What it is |
 |---|---|
