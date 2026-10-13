@@ -287,7 +287,7 @@ index 0f6a1b83..8f8aa4aa 100644
  const WORKSPACE_MIN: f32 = 90.0;
  const ICON_SLOT: f32 = 34.0;
 diff --git a/crates/ui-egui/src/theme.rs b/crates/ui-egui/src/theme.rs
-index 0719c5ce..dcb39281 100644
+index 0719c5ce..9691ad69 100644
 --- a/crates/ui-egui/src/theme.rs
 +++ b/crates/ui-egui/src/theme.rs
 @@ -66,6 +66,9 @@ impl ThemeKind {
@@ -319,10 +319,10 @@ index 0719c5ce..dcb39281 100644
 -    let semibold = add(&mut fonts, "Inter-SemiBold", photocraft_text::fonts::INTER_SEMIBOLD.as_slice());
 -    let mono = add(&mut fonts, "JetBrainsMono", photocraft_text::fonts::JETBRAINS_MONO_REGULAR.as_slice());
 +    // FreeANDIY: IBM Plex Sans for the UI, IBM Plex Mono for numbers and headings.
-+    let inter = add(&mut fonts, "IBMPlexSans", crate::freeandiy::fonts::SANS_REGULAR);
-+    let medium = add(&mut fonts, "IBMPlexSans-Medium", crate::freeandiy::fonts::SANS_MEDIUM);
-+    let semibold = add(&mut fonts, "IBMPlexMono-SemiBold", crate::freeandiy::fonts::MONO_SEMIBOLD);
-+    let mono = add(&mut fonts, "IBMPlexMono", crate::freeandiy::fonts::MONO_REGULAR);
++    let inter = add(&mut fonts, "IBMPlexSans", crate::freeandiy::fonts::sans_regular());
++    let medium = add(&mut fonts, "IBMPlexSans-Medium", crate::freeandiy::fonts::sans_medium());
++    let semibold = add(&mut fonts, "IBMPlexMono-SemiBold", crate::freeandiy::fonts::mono_semibold());
++    let mono = add(&mut fonts, "IBMPlexMono", crate::freeandiy::fonts::mono_regular());
      if let Some(inter) = inter {
          fonts.families.entry(FontFamily::Proportional).or_default().insert(0, inter);
      }

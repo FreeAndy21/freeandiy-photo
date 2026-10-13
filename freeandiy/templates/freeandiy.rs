@@ -37,12 +37,51 @@ const fn channel(x: u8, y: u8, t: f32) -> u8 {
     (x as f32 + (y as f32 - x as f32) * t + 0.5) as u8
 }
 
-/// The bundled UI fonts (SIL Open Font License 1.1; licences in freeandiy/assets/fonts/).
+/// The UI fonts: IBM Plex Sans and Mono on the desktop (SIL Open Font License 1.1; licences in
+/// freeandiy/assets/fonts/). The web build keeps upstream's bundled Inter and JetBrains Mono: the
+/// wasm has to stay under the 25 MiB per-file limit of static hosts (packaging/web/README.md).
 pub mod fonts {
-    pub const SANS_REGULAR: &[u8] = include_bytes!("../../../freeandiy/assets/fonts/IBMPlexSans-Regular.ttf");
-    pub const SANS_MEDIUM: &[u8] = include_bytes!("../../../freeandiy/assets/fonts/IBMPlexSans-Medium.ttf");
-    pub const MONO_REGULAR: &[u8] = include_bytes!("../../../freeandiy/assets/fonts/IBMPlexMono-Regular.ttf");
-    pub const MONO_SEMIBOLD: &[u8] = include_bytes!("../../../freeandiy/assets/fonts/IBMPlexMono-SemiBold.ttf");
+    #[cfg(not(target_arch = "wasm32"))]
+    mod bytes {
+        pub const SANS_REGULAR: &[u8] = include_bytes!("../../../freeandiy/assets/fonts/IBMPlexSans-Regular.ttf");
+        pub const SANS_MEDIUM: &[u8] = include_bytes!("../../../freeandiy/assets/fonts/IBMPlexSans-Medium.ttf");
+        pub const MONO_REGULAR: &[u8] = include_bytes!("../../../freeandiy/assets/fonts/IBMPlexMono-Regular.ttf");
+        pub const MONO_SEMIBOLD: &[u8] = include_bytes!("../../../freeandiy/assets/fonts/IBMPlexMono-SemiBold.ttf");
+    }
+
+    #[cfg(not(target_arch = "wasm32"))]
+    pub fn sans_regular() -> &'static [u8] {
+        bytes::SANS_REGULAR
+    }
+    #[cfg(not(target_arch = "wasm32"))]
+    pub fn sans_medium() -> &'static [u8] {
+        bytes::SANS_MEDIUM
+    }
+    #[cfg(not(target_arch = "wasm32"))]
+    pub fn mono_regular() -> &'static [u8] {
+        bytes::MONO_REGULAR
+    }
+    #[cfg(not(target_arch = "wasm32"))]
+    pub fn mono_semibold() -> &'static [u8] {
+        bytes::MONO_SEMIBOLD
+    }
+
+    #[cfg(target_arch = "wasm32")]
+    pub fn sans_regular() -> &'static [u8] {
+        photocraft_text::fonts::INTER_REGULAR.as_slice()
+    }
+    #[cfg(target_arch = "wasm32")]
+    pub fn sans_medium() -> &'static [u8] {
+        photocraft_text::fonts::INTER_MEDIUM.as_slice()
+    }
+    #[cfg(target_arch = "wasm32")]
+    pub fn mono_regular() -> &'static [u8] {
+        photocraft_text::fonts::JETBRAINS_MONO_REGULAR.as_slice()
+    }
+    #[cfg(target_arch = "wasm32")]
+    pub fn mono_semibold() -> &'static [u8] {
+        photocraft_text::fonts::INTER_SEMIBOLD.as_slice()
+    }
 }
 
 /// The names the FreeANDIY themes show in menus and preferences.

@@ -57,6 +57,8 @@ rsync -a --delete --exclude 'tools/rebrand/target/' --exclude '.venv/' "$ROOT/fr
 REBRAND="$ROOT/freeandiy/tools/rebrand/target/release/freeandiy-rebrand"
 cargo build --quiet --release --manifest-path "$ROOT/freeandiy/tools/rebrand/Cargo.toml"
 "$REBRAND" apply "$WORK/tree"
+# Text replacements change line lengths: keep the tree rustfmt-clean (upstream CI checks it).
+(cd "$WORK/tree" && cargo fmt --all)
 # Which upstream commit this tree is built from (CI's --check reads it back).
 git rev-parse "$UPSTREAM" >"$WORK/tree/.freeandiy-upstream"
 
