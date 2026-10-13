@@ -124,6 +124,13 @@ replace = 'DefinitelyMissing@@UPSTREAM@@'
 min = 1
 
 [[replace]]
+name = "web release zip: freeandiy-photo-<version>-web-wasm32.zip (before the crate-name protect)"
+include = ["packaging/web/package.sh", "packaging/web/README.md", "docs/releasing.md"]
+regex = 'photocraft-web-(<version>|<v>|\$VERSION)'
+replace = "{{this.repo}}-${1}-web-wasm32"
+min = 4
+
+[[replace]]
 name = "protect: cargo -p / --package photocraft"
 include = ["packaging/**", ".github/**", "Dockerfile"]
 regex = '(-p|--package) photocraft'
