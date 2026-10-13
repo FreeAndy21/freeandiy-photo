@@ -103,9 +103,12 @@ jobs:
           curl -fsSL "https://github.com/trunk-rs/trunk/releases/download/v${TRUNK_VERSION}/trunk-x86_64-unknown-linux-gnu.tar.gz" \
             | tar -xz -C "$HOME/.cargo/bin" trunk
       - name: Package
+        # Upstream's 24 MiB gate targets Cloudflare; upstream's own wasm is already ~24.3 MiB.
+        # We host on Vercel and ship a zip, so allow 26 MiB here.
+        env: { PHOTOCRAFT_WASM_MAX_BYTES: "27262976" }
         run: packaging/web/package.sh
       - name: Branding check (web build)
-        run: freeandiy/scripts/check-branding.sh apps/photocraft-web/dist
+        run: freeandiy/scripts/check-branding.sh dist/web
       - uses: actions/upload-artifact@v4
         with: { name: web, path: dist/release/*, if-no-files-found: error }
 
