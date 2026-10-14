@@ -15,7 +15,7 @@ fn main() {
     res.set_icon("../../assets/app-icon/freeandiy-photo.ico")
         .set("ProductName", "FreeANDIY Photo")
         .set("FileDescription", "FreeANDIY Photo image editor")
-        .set("CompanyName", "Learning Machines LLC")
+        .set("CompanyName", "Free Andy Agency")
         .set("LegalCopyright", "Copyright (c) Free Andy Agency and the PhotoCraft authors. MIT OR Apache-2.0.")
         .set("OriginalFilename", "freeandiy-photo.exe")
         .set("InternalName", "freeandiy-photo");

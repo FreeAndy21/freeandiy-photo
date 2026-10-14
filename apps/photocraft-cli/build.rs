@@ -19,7 +19,7 @@ fn main() -> std::io::Result<()> {
     res.set_icon("../../assets/app-icon/freeandiy-photo.ico")
         .set("ProductName", "FreeANDIY Photo")
         .set("FileDescription", "FreeANDIY Photo command-line interface")
-        .set("CompanyName", "Learning Machines LLC")
+        .set("CompanyName", "Free Andy Agency")
         .set("LegalCopyright", "Copyright (c) Free Andy Agency and the PhotoCraft authors. MIT OR Apache-2.0.")
         .set("OriginalFilename", "freeandiy-photo-cli.exe")
         .set("InternalName", "freeandiy-photo-cli");

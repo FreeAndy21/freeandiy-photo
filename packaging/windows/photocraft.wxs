@@ -18,13 +18,13 @@
      xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui">
   <Package
       Name="FreeANDIY Photo"
-      Manufacturer="Learning Machines LLC"
+      Manufacturer="Free Andy Agency"
       Version="$(var.Version)"
       UpgradeCode="BACBA0AE-759D-4233-8188-373626E5857A"
       Scope="perMachine"
       Compressed="yes"
       Language="1033">
-    <SummaryInformation Description="FreeANDIY Photo image editor" Manufacturer="Learning Machines LLC" />
+    <SummaryInformation Description="FreeANDIY Photo image editor" Manufacturer="Free Andy Agency" />
     <!-- Same-version upgrades let successive pre-releases of one X.Y.Z replace each other
          (MSI versions are numeric, so 1.2.3-rc.1 and 1.2.3-rc.2 are both 1.2.3). -->
     <MajorUpgrade AllowSameVersionUpgrades="yes"
