@@ -151,10 +151,13 @@ $Portable = Join-Path $TargetDir "windows-package\freeandiy-photo-$Version-windo
 Remove-Item -Recurse -Force $Portable -ErrorAction SilentlyContinue
 New-Item -ItemType Directory -Force -Path $Portable | Out-Null
 Copy-Item (Join-Path $Stage '*.exe') $Portable
-foreach ($f in 'README.md', 'LICENSE', 'LICENSE-MIT', 'LICENSE-APACHE') {
+foreach ($f in 'README.md', 'LICENSE', 'LICENSE-MIT', 'LICENSE-APACHE', 'NOTICE', 'ATTRIBUTION.md', 'ASSETS.md', 'CHANGELOG-FREEANDIY.md') {
   $p = Join-Path $Root $f
   if (Test-Path $p) { Copy-Item $p $Portable }
 }
+# FreeANDIY: the bundled UI fonts' licences and the brand terms (Apache-2.0 4(d): NOTICE above).
+Copy-Item (Join-Path $Root 'freeandiy\assets\fonts\OFL-*.txt') $Portable
+Copy-Item (Join-Path $Root 'freeandiy\assets\brand\LICENSE-brand.txt') (Join-Path $Portable 'LICENSE-FreeANDIY-brand.txt')
 # Builds made with craft-fonts (CRAFT_FONTS_DIR, all official releases) embed its OFL-1.1 fonts:
 # ship each font's licence as OFL-<family-dir>.txt.
 if ($env:CRAFT_FONTS_DIR) {
