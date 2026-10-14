@@ -48,6 +48,7 @@ hairline = 1.0
 # Category hues come from the four highlighters; siblings vary saturation/lightness.
 [apps.photo]
 name = "FreeANDIY Photo"
+tagline = "image editor"
 repo = "freeandiy-photo"
 upstream = "storytold/photocraft"
 upstream_name = "PhotoCraft"
@@ -61,6 +62,7 @@ msi_component_guid = "E9712E68-F674-4641-BE9D-8A3FA96C4832"
 
 [apps.light]
 name = "FreeANDIY Light"
+tagline = "non-destructive photo editor"
 repo = "freeandiy-light"
 upstream = "storytold/lightcraft"
 upstream_name = "LightCraft"
@@ -72,6 +74,7 @@ msi_component_guid = "B56D3D8F-AF7B-49C7-8D93-A84304843263"
 
 [apps.vector]
 name = "FreeANDIY Vector"
+tagline = "vector illustration tool"
 repo = "freeandiy-vector"
 upstream = "storytold/vectorcraft"
 upstream_name = "VectorCraft"
@@ -83,6 +86,7 @@ msi_component_guid = "7D396BC6-57BC-4C32-92AA-D98937C80248"
 
 [apps.layout]
 name = "FreeANDIY Layout"
+tagline = "page layout and design editor"
 repo = "freeandiy-layout"
 upstream = "storytold/designcraft"
 upstream_name = "DesignCraft"
@@ -94,6 +98,7 @@ msi_component_guid = "A5EA00DF-8842-421C-93F4-D71E210B95F7"
 
 [apps.effects]
 name = "FreeANDIY Effects"
+tagline = "motion graphics and compositing tool"
 repo = "freeandiy-effects"
 upstream = "storytold/effectcraft"
 upstream_name = "EffectCraft"
@@ -105,6 +110,7 @@ msi_component_guid = "FCDB62C1-80A6-4927-A78B-C54982E65E10"
 
 [apps.film]
 name = "FreeANDIY Film"
+tagline = "non-linear video editor"
 repo = "freeandiy-film"
 upstream = "storytold/filmcraft"
 upstream_name = "FilmCraft"
@@ -116,6 +122,7 @@ msi_component_guid = "EF1DD56F-A973-44C2-9A96-3454ACE80B65"
 
 [apps.sound]
 name = "FreeANDIY Sound"
+tagline = "audio recording and editing workstation"
 repo = "freeandiy-sound"
 upstream = "storytold/soundcraft"
 upstream_name = "SoundCraft"
@@ -127,6 +134,7 @@ msi_component_guid = "3BD4BD8F-57A4-4E9C-ABFA-A565BF50C308"
 
 [apps.write]
 name = "FreeANDIY Write"
+tagline = "word processor"
 repo = "freeandiy-write"
 upstream = "storytold/wordcraft"
 upstream_name = "WordCraft"
@@ -138,6 +146,7 @@ msi_component_guid = "D14B967F-B80C-4F1C-BD6D-AB086760EFFF"
 
 [apps.sheets]
 name = "FreeANDIY Sheets"
+tagline = "spreadsheet"
 repo = "freeandiy-sheets"
 upstream = "storytold/gridcraft"
 upstream_name = "GridCraft"
@@ -149,6 +158,7 @@ msi_component_guid = "4CC28F03-0F96-464E-9C86-EC3920546B09"
 
 [apps.slides]
 name = "FreeANDIY Slides"
+tagline = "presentation editor"
 repo = "freeandiy-slides"
 upstream = "storytold/deckcraft"
 upstream_name = "DeckCraft"
@@ -160,6 +170,7 @@ msi_component_guid = "81071293-EEFE-43CE-8992-2C96A0C74B1F"
 
 [apps.pdf]
 name = "FreeANDIY PDF"
+tagline = "PDF reader and editor"
 repo = "freeandiy-pdf"
 upstream = "storytold/pdfcraft"
 upstream_name = "PdfCraft"
@@ -171,6 +182,7 @@ msi_component_guid = "B66ACB7F-DB16-48BA-ABD7-FA2DE9D20CCD"
 
 [apps.cad]
 name = "FreeANDIY CAD"
+tagline = "computer-aided design tool"
 repo = "freeandiy-cad"
 upstream = "storytold/cadcraft"
 upstream_name = "CadCraft"
@@ -180,6 +192,7 @@ label = "paper" # black on rose is only 3.2:1
 
 [apps.launcher]
 name = "FreeANDIY Launcher"
+tagline = "launcher for the FreeANDIY apps"
 repo = "freeandiy-launcher"
 upstream = "storytold/craft-launcher"
 upstream_name = "Craft Launcher"
