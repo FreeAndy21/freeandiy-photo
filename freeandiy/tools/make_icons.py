@@ -159,6 +159,11 @@ def build(key, app, colors):
 
 def main():
     cfg = tomllib.loads((ROOT / "branding.toml").read_text())
+    app_toml = ROOT / "app.toml"  # absent in the meta repository: name the app(s) or `all`
+    if app_toml.exists():
+        cfg.update(tomllib.loads(app_toml.read_text()))
+    if not sys.argv[1:] and "app" not in cfg:
+        sys.exit("usage: make_icons.py <app>... | all")
     keys = sys.argv[1:] or [cfg["app"]]
     if keys == ["all"]:
         keys = list(cfg["apps"])

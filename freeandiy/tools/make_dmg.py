@@ -27,6 +27,7 @@ import make_icons  # noqa: E402  (angel masks, colours)
 ROOT = Path(__file__).resolve().parents[1]  # freeandiy/
 OUT = ROOT / "assets" / "dmg"
 CFG = tomllib.loads((ROOT / "branding.toml").read_text())
+CFG.update(tomllib.loads((ROOT / "app.toml").read_text()))
 APP = CFG["apps"][CFG["app"]]
 
 # Keep in sync with packaging/macos/package.sh (volume name = the app name).
