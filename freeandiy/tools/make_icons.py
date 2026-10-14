@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# Modified-by: FreeANDIY (Free Andy Agency), 2026. New file, not part of upstream PhotoCraft.
+# Modified-by: FreeANDIY (Free Andy Agency), 2026. New file, not part of upstream.
 """Generate the FreeANDIY app icon set (variant C: the angel Andy on the app colour).
 
     python3 -m venv .venv && .venv/bin/pip install -r freeandiy/tools/requirements.txt

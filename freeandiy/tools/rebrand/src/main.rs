@@ -1,4 +1,4 @@
-// Modified-by: FreeANDIY (Free Andy Agency), 2026. New file, not part of upstream PhotoCraft.
+// Modified-by: FreeANDIY (Free Andy Agency), 2026. New file, not part of upstream.
 //! Apply the FreeANDIY branding to a pristine upstream checkout.
 //!
 //!     cargo run --manifest-path freeandiy/tools/rebrand/Cargo.toml -- apply [ROOT]
