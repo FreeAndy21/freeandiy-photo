@@ -151,6 +151,10 @@ fn finish_variables(mut vars: BTreeMap<String, String>) -> Result<BTreeMap<Strin
     let owner = get("brand.github_owner")?;
     let repo = get("this.repo")?;
     let website = get("brand.website")?;
+    // `this.upstream_slug` = upstream's repository (and crate/binary) name, e.g. "photocraft".
+    let upstream = get("this.upstream")?;
+    let slug = upstream.rsplit('/').next().unwrap_or(&upstream).to_string();
+    vars.insert("this.upstream_slug".into(), slug);
     vars.insert("this.key".into(), app.clone());
     vars.insert("this.app_id".into(), format!("{prefix}.{app}"));
     vars.insert("this.github".into(), format!("https://github.com/{owner}/{repo}"));
