@@ -101,12 +101,23 @@ struct Copy {
     to: String,
 }
 
-/// Flatten branding.toml into `section.key` strings, plus derived values.
+/// Flatten branding.toml (shared by every FreeANDIY repository) and app.toml (this repository:
+/// `app = "<id>"` and its build settings) into `section.key` strings, plus derived values.
 fn variables(root: &Path) -> Result<BTreeMap<String, String>> {
-    let path = root.join("freeandiy/branding.toml");
-    let text = fs::read_to_string(&path).with_context(|| format!("reading {}", path.display()))?;
-    let doc: toml::Table = text.parse().with_context(|| format!("parsing {}", path.display()))?;
     let mut vars = BTreeMap::new();
+    for name in ["branding.toml", "app.toml"] {
+        let path = root.join("freeandiy").join(name);
+        if name == "app.toml" && !path.exists() {
+            continue;
+        }
+        let text = fs::read_to_string(&path).with_context(|| format!("reading {}", path.display()))?;
+        let doc: toml::Table = text.parse().with_context(|| format!("parsing {}", path.display()))?;
+        flatten(&doc, &mut vars);
+    }
+    finish_variables(vars)
+}
+
+fn flatten(doc: &toml::Table, vars: &mut BTreeMap<String, String>) {
     fn walk(prefix: &str, t: &toml::Table, out: &mut BTreeMap<String, String>) {
         for (k, v) in t {
             let key = if prefix.is_empty() { k.clone() } else { format!("{prefix}.{k}") };
@@ -121,8 +132,11 @@ fn variables(root: &Path) -> Result<BTreeMap<String, String>> {
             }
         }
     }
-    walk("", &doc, &mut vars);
-    let app = vars.get("app").cloned().ok_or_else(|| anyhow!("branding.toml: missing `app`"))?;
+    walk("", doc, vars);
+}
+
+fn finish_variables(mut vars: BTreeMap<String, String>) -> Result<BTreeMap<String, String>> {
+    let app = vars.get("app").cloned().ok_or_else(|| anyhow!("app.toml: missing `app`"))?;
     // `this.*` = the [apps.<app>] entry of this repository.
     let this: Vec<(String, String)> = vars
         .iter()
@@ -385,8 +399,16 @@ fn main() -> Result<()> {
             }
             Ok(())
         }
+        Some("get") => {
+            // `rebrand get KEY [ROOT]`: one value, for shell scripts; an unknown key is an error.
+            let key = args.get(1).ok_or_else(|| anyhow!("usage: rebrand get KEY [ROOT]"))?;
+            let root = args.get(2).map(PathBuf::from).unwrap_or_else(|| PathBuf::from("."));
+            let vars = variables(&root)?;
+            println!("{}", vars.get(key.as_str()).ok_or_else(|| anyhow!("unknown key {key}"))?);
+            Ok(())
+        }
         _ => {
-            eprintln!("usage: rebrand apply|vars [ROOT]");
+            eprintln!("usage: rebrand apply|vars [ROOT] | get KEY [ROOT]");
             std::process::exit(2);
         }
     }

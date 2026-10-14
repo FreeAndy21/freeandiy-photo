@@ -1,0 +1,24 @@
+# This repository's FreeANDIY settings (branding.toml is shared by all FreeANDIY repositories).
+# Modified-by: FreeANDIY (Free Andy Agency), 2026. New file, not part of upstream PhotoCraft.
+
+app = "photo" # which [apps.<id>] entry of branding.toml this repository builds
+
+[build]
+# cargo arguments for the release binaries, the tests sync-upstream.sh runs, and the web page.
+bins = "-p photocraft -p photocraft-cli"
+features = "--features heif"
+tests = "-p photocraft-ui-egui -p photocraft-engine -p photocraft -p photocraft-cli"
+web_index = "apps/photocraft-web/index.html"
+# Environment for tests: English UI whatever the machine's locale.
+test_env = "PHOTOCRAFT_LOCALE=en"
+# Environment for packaging/web/package.sh: upstream's 24 MiB gate targets Cloudflare; we ship a
+# zip and host on Vercel, so allow 26 MiB.
+web_env = "PHOTOCRAFT_WASM_MAX_BYTES=27262976"
+# Executables checked for upstream branding (default: <repo> <repo>-cli).
+exes = "freeandiy-photo freeandiy-photo-cli"
+
+[check]
+# check-branding.sh: extra allowed strings (regex) and Rust paths where the upstream name may stay
+# in string literals (git pathspecs, space-separated).
+allow = "DefinitelyMissingPhotoCraft"
+rs_exclude = ":!xtask/** :!crates/cms/** :!crates/codecs/tests/**"

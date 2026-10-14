@@ -1,5 +1,6 @@
-# Modified-by: FreeANDIY (Free Andy Agency), 2026. New file, not part of upstream PhotoCraft.
-# Release FreeANDIY Photo: build every package with packaging/, check the branding, and attach
+# Modified-by: FreeANDIY (Free Andy Agency), 2026. New file, not part of upstream.
+# Shared by every FreeANDIY app (source: FreeAndy21/freeandiy); app settings: freeandiy/app.toml.
+# Release a FreeANDIY app: build every package with packaging/, check the branding, and attach
 # the files to a draft GitHub release (published by hand after a look).
 #
 # Push a tag `v<version>` (e.g. v0.8.0-fa.1) or run it by hand. Signing secrets are optional:
@@ -46,7 +47,9 @@ jobs:
           APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
         run: packaging/macos/package.sh --arch universal
       - name: Branding check (binaries)
-        run: freeandiy/scripts/check-branding.sh target/aarch64-apple-darwin/release/freeandiy-photo target/aarch64-apple-darwin/release/freeandiy-photo-cli
+        run: |
+          . <(freeandiy/scripts/settings.sh | sed 's/^/export /; s/=\(.*\)$/="\1"/')
+          freeandiy/scripts/check-branding.sh $(printf 'target/aarch64-apple-darwin/release/%s ' $FA_EXES)
       - uses: actions/upload-artifact@v4
         with: { name: macos, path: dist/release/*, if-no-files-found: error }
 
@@ -67,7 +70,9 @@ jobs:
       - name: Package
         run: packaging/linux/package.sh
       - name: Branding check (binaries)
-        run: freeandiy/scripts/check-branding.sh target/release/freeandiy-photo target/release/freeandiy-photo-cli
+        run: |
+          . <(freeandiy/scripts/settings.sh | sed 's/^/export /; s/=\(.*\)$/="\1"/')
+          freeandiy/scripts/check-branding.sh $(printf 'target/release/%s ' $FA_EXES)
       - uses: actions/upload-artifact@v4
         with: { name: linux, path: dist/release/*, if-no-files-found: error }
 
@@ -103,10 +108,9 @@ jobs:
           curl -fsSL "https://github.com/trunk-rs/trunk/releases/download/v${TRUNK_VERSION}/trunk-x86_64-unknown-linux-gnu.tar.gz" \
             | tar -xz -C "$HOME/.cargo/bin" trunk
       - name: Package
-        # Upstream's 24 MiB gate targets Cloudflare; upstream's own wasm is already ~24.3 MiB.
-        # We host on Vercel and ship a zip, so allow 26 MiB here.
-        env: { PHOTOCRAFT_WASM_MAX_BYTES: "27262976" }
-        run: packaging/web/package.sh
+        run: |
+          . <(freeandiy/scripts/settings.sh | sed 's/^/export /; s/=\(.*\)$/="\1"/')
+          env $FA_WEB_ENV packaging/web/package.sh
       - name: Branding check (web build)
         run: freeandiy/scripts/check-branding.sh dist/web
       - uses: actions/upload-artifact@v4
@@ -118,15 +122,19 @@ jobs:
     permissions:
       contents: write
     steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - name: App settings
+        run: freeandiy/scripts/settings.sh >> "$GITHUB_ENV"
       - uses: actions/download-artifact@v4
-        with: { path: dist, merge-multiple: true }
+        with: { path: release-files, merge-multiple: true }
       - name: Checksums
-        run: cd dist && sha256sum * > SHA256SUMS.txt && cat SHA256SUMS.txt
+        run: cd release-files && sha256sum * > SHA256SUMS.txt && cat SHA256SUMS.txt
       - name: Draft release
         env:
           GH_TOKEN: ${{ github.token }}
           TAG: ${{ github.ref_type == 'tag' && github.ref_name || format('build-{0}', github.run_number) }}
         run: |
-          gh release create "$TAG" dist/* --repo "$GITHUB_REPOSITORY" --draft \
-            --title "FreeANDIY Photo $TAG" \
-            --notes "FreeANDIY Photo, based on PhotoCraft (MIT/Apache-2.0). See CHANGELOG-FREEANDIY.md."
+          gh release create "$TAG" release-files/* --repo "$GITHUB_REPOSITORY" --draft \
+            --title "$FA_NAME $TAG" \
+            --notes "$FA_NAME, based on $FA_UPSTREAM_NAME (MIT/Apache-2.0). See CHANGELOG-FREEANDIY.md."

@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
-# Modified-by: FreeANDIY (Free Andy Agency), 2026. New file, not part of upstream PhotoCraft.
+# Modified-by: FreeANDIY (Free Andy Agency), 2026. New file, not part of upstream.
 #
-# Pull the latest upstream PhotoCraft into FreeANDIY Photo.
+# Pull the latest upstream into this FreeANDIY app.
 #
 #   freeandiy/scripts/sync-upstream.sh [--no-test] [--push]
 #
-# 1. fetch `upstream` (storytold/photocraft) and fast-forward the `upstream-main` branch to it
+# 1. fetch `upstream` (the [apps.<app>].upstream repository) and fast-forward the `upstream-main` branch to it
 # 2. regenerate `main` = new upstream + freeandiy/ (freeandiy/scripts/regenerate.sh)
 # 3. check branding, build, and run the tests of the crates the branding touches
 # 4. with --push: push `upstream-main` and `main` to origin (plain pushes, never forced)
@@ -23,10 +23,10 @@ for a in "$@"; do
   esac
 done
 
-ROOT="$(git rev-parse --show-toplevel)"
+. "$(dirname "${BASH_SOURCE[0]}")/lib.sh"
 cd "$ROOT"
 [ "$(git rev-parse --abbrev-ref HEAD)" = main ] || { echo "error: run on main" >&2; exit 1; }
-git remote get-url upstream >/dev/null 2>&1 || git remote add upstream https://github.com/storytold/photocraft.git
+git remote get-url upstream >/dev/null 2>&1 || git remote add upstream "https://github.com/$(fa_get this.upstream).git"
 
 echo "==> fetch upstream"
 git fetch --quiet upstream
@@ -47,8 +47,10 @@ freeandiy/scripts/check-branding.sh
 
 if [ "$TEST" = 1 ]; then
   echo "==> build and test"
-  cargo build --release --locked -p photocraft -p photocraft-cli
-  cargo test --locked -p photocraft-ui-egui -p photocraft-engine -p photocraft -p photocraft-cli --lib --tests
+  # shellcheck disable=SC2046 # the settings are cargo argument lists
+  cargo build --release --locked $(fa_get build.bins) $(fa_get build.features "")
+  # shellcheck disable=SC2046
+  env $(fa_get build.test_env "") cargo test --locked $(fa_get build.tests) --lib --tests
 fi
 
 if [ "$PUSH" = 1 ]; then
