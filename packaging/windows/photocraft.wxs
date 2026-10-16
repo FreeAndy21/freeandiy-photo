@@ -51,6 +51,7 @@
 
     <Feature Id="Main" Title="FreeANDIY Photo" Level="1">
       <ComponentGroupRef Id="PhotocraftFiles" />
+      <ComponentGroupRef Id="FreeandiyNotices" />
     </Feature>
 
     <!-- The setup wizard: WixUI_InstallDir without its licence page (the code is MIT OR
@@ -151,6 +152,13 @@
       <Component Id="PhotocraftCli">
         <File Id="PhotocraftCliExe" Source="$(var.BinDir)\freeandiy-photo-cli.exe" KeyPath="yes" />
       </Component>
+    </ComponentGroup>
+  </Fragment>
+  <!-- FreeANDIY: licences, NOTICE, attribution, font licences and brand terms (Apache-2.0 4(d)),
+       staged by package.ps1. -->
+  <Fragment>
+    <ComponentGroup Id="FreeandiyNotices" Directory="INSTALLFOLDER">
+      <Files Include="$(var.NoticesDir)\*" />
     </ComponentGroup>
   </Fragment>
 </Wix>

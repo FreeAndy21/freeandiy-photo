@@ -129,10 +129,30 @@ $Banner = Join-Path $Stage 'installer-banner.bmp'
 $Dialog = Join-Path $Stage 'installer-dialog.bmp'
 New-InstallerArt (Join-Path $Root 'assets\app-icon\hicolor\256x256\apps\agency.freeandy.photo.png') $Banner $Dialog
 
+# FreeANDIY: the MSI installs these next to the app (Apache-2.0 4(d); same set as the portable ZIP).
+$FaNotices = Join-Path $Stage 'freeandiy-notices'
+Remove-Item -Recurse -Force $FaNotices -ErrorAction SilentlyContinue
+New-Item -ItemType Directory -Force -Path $FaNotices | Out-Null
+foreach ($f in 'LICENSE', 'LICENSE-MIT', 'LICENSE-APACHE', 'NOTICE', 'ATTRIBUTION.md', 'ASSETS.md') {
+  $p = Join-Path $Root $f
+  if (Test-Path $p) { Copy-Item $p $FaNotices }
+}
+Copy-Item (Join-Path $Root 'freeandiy\assets\fonts\OFL-*.txt') $FaNotices
+Copy-Item (Join-Path $Root 'freeandiy\assets\brand\LICENSE-brand.txt') (Join-Path $FaNotices 'LICENSE-FreeANDIY-brand.txt')
+if ($env:CRAFT_FONTS_DIR) {
+  Get-ChildItem -Path (Join-Path $env:CRAFT_FONTS_DIR 'fonts') -Directory -ErrorAction SilentlyContinue | ForEach-Object {
+    $lic = Join-Path $_.FullName 'OFL.txt'
+    if (Test-Path $lic) { Copy-Item $lic (Join-Path $FaNotices "OFL-$($_.Name).txt") }
+  }
+}
+foreach ($f in 'LICENSE-MIT', 'LICENSE-APACHE', 'NOTICE', 'ATTRIBUTION.md') {
+  if (-not (Test-Path (Join-Path $FaNotices $f))) { throw "MSI notices: $f is missing" }
+}
+
 $Msi = Join-Path $Dist "freeandiy-photo-$Version-windows-$Arch.msi"
 & (Join-Path $PSScriptRoot 'check-icons.ps1')
 Invoke-Native 'wix build' {
-  wix build (Join-Path $PSScriptRoot 'photocraft.wxs') -arch $Arch `
+  wix build (Join-Path $PSScriptRoot 'photocraft.wxs') -arch $Arch -d "NoticesDir=$FaNotices" `
     -ext WixToolset.UI.wixext -ext WixToolset.Util.wixext `
     -culture en-US -loc (Join-Path $PSScriptRoot 'photocraft.en-us.wxl') `
     -d "Version=$MsiVersion" -d "DisplayVersion=$Version" -d "BinDir=$Stage" -d "IconPath=$(Join-Path $Root 'assets\app-icon\freeandiy-photo.ico')" `
